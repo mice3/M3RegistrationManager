@@ -13,6 +13,9 @@
 #import "Accounts/Accounts.h"
 
 
+#define kServerURL @"http://stroski.talcho.com/"
+
+
 @interface M3RegistrationManager ()
 @property (nonatomic, strong) ACAccountStore *accountStore;
 @property (nonatomic, strong) TWAPIManager *apiManager;
