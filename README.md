@@ -10,9 +10,6 @@ Installation:
 -in M3RegistrationConstants fill out your info  
 -Start writing code!
 
-
--fno-objc-arc
-
 Requirements:
 -------------
 -iOS6.x or newer  
