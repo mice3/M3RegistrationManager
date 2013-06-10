@@ -14,6 +14,8 @@
 
 
 #define kServerURL @"http://stroski.talcho.com/"
+#define kUserId @"userId"
+#define kUserDeviceId @"userDeviceId"
 
 
 @interface M3RegistrationManager ()
