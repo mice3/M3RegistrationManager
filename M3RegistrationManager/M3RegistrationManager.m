@@ -7,9 +7,7 @@
 //
 
 #import "M3RegistrationManager.h"
-#import "ServerCommunicationManager.h"
 #import "AFHTTPClient.h"
-#import "NSString+MD5.h"
 #import <Twitter/Twitter.h>
 #import "TWAPIManager.h"
 #import "Accounts/Accounts.h"
@@ -50,7 +48,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
 
 -(void) registerDeviceWithRegistrationType:(M3RegistrationType)type
 {
-    NSDictionary *deviceDict = [ServerCommunicationManager getUserDevicePostParamsDictionary];
+    NSDictionary *deviceDict = [M3RegistrationManager getUserDevicePostParamsDictionary];
     
     if(!deviceDict) {
         switch (type) {
@@ -142,7 +140,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
 {
     [self showTransparentView:YES];
     
-    NSMutableDictionary *params = [[ServerCommunicationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -249,15 +247,12 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                           andFacebookId:(NSString *)facebookId
                          andAccessToken:(NSString *)accessToken
 {
-    NSString *md5encoded = [[NSString stringWithFormat:@"%@%@%@", email, facebookId, kM3Code] MD5];
-    
-    NSMutableDictionary *params = [[ServerCommunicationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
     
     [params setValue:facebookId forKey:@"facebookId"];
-    [params setValue:md5encoded forKey:@"verificationCode"];
     [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
     [params setValue:accessToken forKey:@"accessToken"];
     
@@ -292,7 +287,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
 
 -(void) registerDeviceWithTwitterAccessToken:(NSString *)accessToken
 {
-    NSMutableDictionary *params = [[ServerCommunicationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -376,6 +371,19 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     }
     
     self.transparentView.hidden = !showView;
+}
+
++(NSDictionary *) getUserDevicePostParamsDictionary
+{
+    NSString * deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDeviceId];
+    NSString * secureCode = [[NSUserDefaults standardUserDefaults] stringForKey:kSecureCode];
+    
+    if (deviceId && secureCode) {
+        return @{kUserDeviceId: deviceId,
+                 kSecureCode: secureCode};
+    } else {
+        return nil;
+    }
 }
 
 @end

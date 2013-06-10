@@ -16,12 +16,23 @@ typedef enum{
 
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
 
+/*
+ viewController is the view where registration happens (we need it so that the touches can be disabled while the
+ procedure takes place
+*/
 -(id)initWithViewController:(UIViewController *)viewController;
+/*
+ register with either FB, TW or email
+*/
 -(void) registerDeviceWithRegistrationType:(M3RegistrationType)type;
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
+// connects the current account with facebook
 -(void)connectWithFacebook;
 
 - (void)obtainAccessToAccountsWithBlock:(void (^)(BOOL))block;
+
+// Class metohds
++(NSDictionary *) getUserDevicePostParamsDictionary;
 
 @end
