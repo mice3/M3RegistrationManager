@@ -53,7 +53,7 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
         available = [TWTweetComposeViewController canSendTweet];
     }
     
-    TWDLog(@"Returning: %@", (available) ? @"YES": @"NO");
+    NSLog(@"Returning: %@", (available) ? @"YES": @"NO");
     
     return available;
 }
@@ -73,11 +73,11 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
     NSParameterAssert(requestMethod);
     
     if ([SLRequest class]) {
-        TWDLog(@"Using request class: SLRequest\n");
+        NSLog(@"Using request class: SLRequest\n");
         return (id<GenericTwitterRequest>) [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:requestMethod URL:url parameters:dict];
     }
     else {
-        TWDLog(@"Using request class: TWRequest\n");
+        NSLog(@"Using request class: TWRequest\n");
         return (id<GenericTwitterRequest>) [[TWRequest alloc] initWithURL:url parameters:dict requestMethod:requestMethod];
     }
 }
@@ -96,7 +96,7 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
     NSParameterAssert(account);
     [self _step1WithCompletion:^(NSData *data, NSError *error) {
         if (!data) {
-            TWDLog(@"Step 1 FAILED with error %@\n", [error localizedDescription]);
+            NSLog(@"Step 1 FAILED with error %@\n", [error localizedDescription]);
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 handler(nil, error);
@@ -143,7 +143,7 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
     NSURL *authTokenURL = [NSURL URLWithString:TW_OAUTH_URL_AUTH_TOKEN];
     id<GenericTwitterRequest> step2Request = [self requestWithUrl:authTokenURL parameters:step2Params requestMethod:SLRequestMethodPOST];
     
-    TWDLog(@"Step 2: Sending a request to %@\nparameters %@\n", authTokenURL, step2Params);
+    NSLog(@"Step 2: Sending a request to %@\nparameters %@\n", authTokenURL, step2Params);
     
     [step2Request setAccount:account];
     [step2Request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
@@ -167,7 +167,7 @@ typedef void(^TWAPIHandler)(NSData *data, NSError *error);
     NSDictionary *dict = @{TW_X_AUTH_MODE_KEY: TW_X_AUTH_MODE_REVERSE_AUTH};
     TWSignedRequest *step1Request = [[TWSignedRequest alloc] initWithURL:url parameters:dict requestMethod:TWSignedRequestMethodPOST];
     
-    TWDLog(@"Step 1: Sending a request to %@\nparameters %@\n", url, dict);
+    NSLog(@"Step 1: Sending a request to %@\nparameters %@\n", url, dict);
     
     [step1Request performRequestWithHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

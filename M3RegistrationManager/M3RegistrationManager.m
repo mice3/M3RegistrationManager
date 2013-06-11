@@ -11,6 +11,7 @@
 #import <Twitter/Twitter.h>
 #import "TWAPIManager.h"
 #import "Accounts/Accounts.h"
+#import "M3RegistrationConstants.h"
 
 
 #define kServerURL @"http://stroski.talcho.com/"
@@ -44,7 +45,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
         logingInLabel.backgroundColor = [UIColor clearColor];
         logingInLabel.textAlignment = NSTextAlignmentCenter;
         logingInLabel.text = @"Logging in...";
-        logingInLabel.font = [UIFont fontWithName:kFontHouschaBold size:30];
+//        logingInLabel.font = [UIFont fontWithName:kFontHouschaBold size:30];
         logingInLabel.textColor = [UIColor whiteColor];
         [self.transparentView addSubview:logingInLabel];
     }
@@ -261,7 +262,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
     [params setValue:accessToken forKey:@"accessToken"];
     
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFacebookConnected];
+//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFacebookConnected];
     
     [self registerDeviceWithParameters:params];
 }
@@ -329,7 +330,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
             if (responseData) {
                 NSString *accessToken = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 
-                TWDLog(@"Reverse Auth process returned: %@", accessToken);
+                NSLog(@"Reverse Auth process returned: %@", accessToken);
 
                 NSArray *lines = [accessToken componentsSeparatedByString:@"&"];
                 NSString *twitterId = [[[lines objectAtIndex:2] componentsSeparatedByString:@"="] objectAtIndex:1];
@@ -340,7 +341,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                 });
             }
             else {
-                TWALog(@"Reverse Auth process failed. Error returned was: %@\n", [error localizedDescription]);
+                NSLog(@"Reverse Auth process failed. Error returned was: %@\n", [error localizedDescription]);
             }
         }];
     }
