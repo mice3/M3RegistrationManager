@@ -13,7 +13,6 @@
 #import "Accounts/Accounts.h"
 
 
-#define kServerURL @"http://stroski.talcho.com/"
 #define kUserId @"userId"
 #define kUserDeviceId @"userDeviceId"
 
@@ -61,7 +60,9 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                 [self registerDeviceWithEmail];
                 break;
             case M3RegistrationTypeFacebook:
-                [self showTransparentView:YES];
+                if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+                    [self.delegate showTransparentView:YES];
+                }
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateChanged:) name:FBSessionStateChangedNotification object:nil];
                 [self registerDeviceWithFacebook];
                 break;
@@ -75,12 +76,58 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     }
 }
 
+-(void) loginWithParameters:(NSDictionary *)parameters
+{
+    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
+                            [NSURL URLWithString:kServerURL]];
+    
+    [client postPath:kServerLogin parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+            [self.delegate showTransparentView:NO];
+        }
+        
+        NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        
+        NSError *error;
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
+                                                             options: NSJSONReadingMutableContainers
+                                                               error: &error];
+        if (error) {
+            if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+                [self.delegate registrationFailure:error];
+            }
+        } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
+            [self setUserDeviceId:[[JSON valueForKey:kUserDeviceId] intValue] andSecureCode:[JSON valueForKey:kSecureCode] ansIsActivated:YES];
+            if ([self.delegate respondsToSelector:@selector(registrationSuccess:)]) {
+                [self.delegate registrationSuccess:JSON];
+            }
+        } else {
+            if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+                [self.delegate registrationFailure:[JSON valueForKey:@"errorMessage"]];
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+            [self.delegate showTransparentView:NO];
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+            [self.delegate registrationFailure:error];
+        }
+        
+    }];
+}
+
 -(void) registerDeviceWithParameters:(NSDictionary *)parameters
 {
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
                             [NSURL URLWithString:kServerURL]];
     
     [client postPath:kServerCreateDevice parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+            [self.delegate showTransparentView:NO];
+        }
+        
         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
 
         NSError *error;
@@ -88,41 +135,32 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                                                              options: NSJSONReadingMutableContainers
                                                                error: &error];
         if (error) {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"FlyKly Error", nil)
-                                                           message: text
-                                                          delegate: nil
-                                                 cancelButtonTitle: NSLocalizedString(@"Ok", nil)
-                                                 otherButtonTitles:nil];
-            
-            [alert show];
-            
-            [self showTransparentView:NO];
-            return;
-        }
-        
-        if( [[JSON valueForKey:@"hasError"] intValue] == 0 ) {
-            [self setUserDeviceId:[[JSON valueForKey:kUserDeviceId] intValue] andSecureCode:[JSON valueForKey:kSecureCode] ansIsActivated:YES];
-            [self.viewController dismissViewControllerAnimated:YES completion:nil];
+            if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+                [self.delegate registrationFailure:error];
+            }
+        } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
+            if ([self.delegate respondsToSelector:@selector(registrationSuccess:)]) {
+                [self.delegate registrationSuccess:JSON];
+            }
         } else {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Login Failed"
-                                                           message: [JSON valueForKey:@"errorCode"]
-                                                          delegate: nil
-                                                 cancelButtonTitle: NSLocalizedString(@"Ok", nil)
-                                                 otherButtonTitles:nil];
-            
-            
-            [alert show];
+            if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+                [self.delegate registrationFailure:[JSON valueForKey:@"errorMessage"]];
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+            [self.delegate showTransparentView:NO];
         }
         
-        [self showTransparentView:NO];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", [error localizedDescription]);
-        [self showTransparentView:NO];
-
+        if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+            [self.delegate registrationFailure:error];
+        }
+        
     }];
 }
 
--(void) setUserDeviceId:(int) userDeviceId andSecureCode:(NSString *) secureCode ansIsActivated:(BOOL) isActivated
+-(void) setUserDeviceId:(int) userDeviceId
+          andSecureCode:(NSString *) secureCode ansIsActivated:(BOOL) isActivated
 {
     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userDeviceId] forKey:@"userDeviceId"];
     [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:@"secureCode"];
@@ -134,6 +172,16 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     
 }
 
+-(void) showAlertViewWithText:(NSString *)text
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ApplicationTitle", nil)
+                                                        message:text
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                                              otherButtonTitles:nil];
+    [alertView show];
+}
+
 #pragma mark - Email registration
 -(void) registerDeviceWithEmail
 {
@@ -141,9 +189,29 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
 }
 
 -(void) registerDeviceWithEmail:(NSString *)email
-                    andPassword:(NSString *)password
 {
-    [self showTransparentView:YES];
+    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+        [self.delegate showTransparentView:YES];
+    }
+    
+    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    if (!params) {
+        params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    }
+    
+    [params setValue:email forKey:@"email"];
+    
+    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
+    
+    [self registerDeviceWithParameters:params];
+}
+
+-(void) loginWithEmail:(NSString *)email
+           andPassword:(NSString *)password
+{
+    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+        [self.delegate showTransparentView:YES];
+    }
     
     NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
@@ -151,12 +219,65 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     }
     [params setValue:email forKey:@"email"];
     [params setValue:password forKey:@"password"];
+    
     [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
     
-    [self registerDeviceWithParameters:params];
+    [self loginWithParameters:params];
 }
 
-
+-(void)forgotPassword
+{
+    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+        [self.delegate showTransparentView:YES];
+    }
+    
+    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
+                            [NSURL URLWithString:kServerURL]];
+    
+    NSDictionary *params = [M3RegistrationManager getUserDevicePostParamsDictionary];
+    
+    if (!params) {
+        params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    }
+    
+    [client postPath:kServerForgotPassword
+          parameters:params
+             success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+             [self.delegate showTransparentView:NO];
+         }
+         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+         NSError *error;
+         
+         NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
+                                                              options: NSJSONReadingMutableContainers
+                                                                error: &error];
+         
+         if (error) {
+             if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+                 [self.delegate registrationFailure:error];
+             }
+         } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
+             if ([self.delegate respondsToSelector:@selector(registrationSuccess:)]) {
+                 [self.delegate registrationSuccess:JSON];
+             }
+         } else {
+             if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+                 [self.delegate registrationFailure:[JSON valueForKey:@"errorMessage"]];
+             }
+         }
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+             [self.delegate showTransparentView:NO];
+         }
+         
+         if ([self.delegate respondsToSelector:@selector(registrationFailure:)]) {
+             [self.delegate registrationFailure:error];
+         }
+         
+     }];
+}
 
 
 #pragma mark - Facebook registration
@@ -199,7 +320,9 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                                        andAccessToken:[FBSession.activeSession accessToken]];
 //                [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession accessToken]];
             } else {
-                [self showTransparentView:NO];
+                if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+                    [self.delegate showTransparentView:NO];
+                }
             }
          }];
     } else {
@@ -323,7 +446,9 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != actionSheet.cancelButtonIndex) {
-        [self showTransparentView:YES];
+        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+            [self.delegate showTransparentView:YES];
+        }
         [self.apiManager performReverseAuthForAccount:self.accounts[buttonIndex] withHandler:^(NSData *responseData, NSError *error) {
             [[NSNotificationCenter defaultCenter] removeObserver:self];
             if (responseData) {
@@ -365,17 +490,6 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     else {
         [self.accountStore requestAccessToAccountsWithType:twitterType options:nil completion:handler];
     }
-}
-
--(void)showTransparentView:(BOOL)showView
-{
-    if (showView) {
-        [self.viewController.view addSubview:self.transparentView];
-    } else {
-        [self.transparentView removeFromSuperview];
-    }
-    
-    self.transparentView.hidden = !showView;
 }
 
 +(NSDictionary *) getUserDevicePostParamsDictionary

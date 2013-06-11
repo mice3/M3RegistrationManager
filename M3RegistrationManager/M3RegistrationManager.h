@@ -16,7 +16,16 @@ typedef enum{
     M3RegistrationTypeEmail
 } M3RegistrationType;
 
+@protocol M3RegistartionManagerDelegate <NSObject>
+-(void)registrationSuccess:(NSDictionary *)responseData;
+@optional
+-(void)showTransparentView:(BOOL)showView;
+-(void)registrationFailure:(NSError *)error;
+@end
+
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
+
+@property (nonatomic, strong) id<M3RegistartionManagerDelegate> delegate;
 
 /*
  viewController is the view where registration happens (we need it so that the touches can be disabled while the
@@ -27,8 +36,13 @@ typedef enum{
  register with either FB, TW or email
 */
 -(void) registerDeviceWithRegistrationType:(M3RegistrationType)type;
--(void) registerDeviceWithEmail:(NSString *)email
-                    andPassword:(NSString *)password;
+-(void) registerDeviceWithEmail:(NSString *)email;
+-(void) loginWithEmail:(NSString *)email
+           andPassword:(NSString *)password;
+-(void)forgotPassword;
+-(void) setUserDeviceId:(int) userDeviceId
+          andSecureCode:(NSString *) secureCode
+         ansIsActivated:(BOOL) isActivated;
 // connects the current account with facebook
 -(void)connectWithFacebook;
 
