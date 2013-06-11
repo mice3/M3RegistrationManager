@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import "M3RegistrationConstants.h"
 
 typedef enum{
     M3RegistrationTypeFacebook,

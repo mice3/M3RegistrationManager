@@ -11,7 +11,6 @@
 #import <Twitter/Twitter.h>
 #import "TWAPIManager.h"
 #import "Accounts/Accounts.h"
-#import "M3RegistrationConstants.h"
 
 
 #define kServerURL @"http://stroski.talcho.com/"
