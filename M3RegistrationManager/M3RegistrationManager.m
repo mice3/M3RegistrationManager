@@ -165,9 +165,6 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userDeviceId] forKey:@"userDeviceId"];
     [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:@"secureCode"];
     
-    NSString * deviceId2 = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDeviceId];
-    NSString * secureCode2 = [[NSUserDefaults standardUserDefaults] stringForKey:kSecureCode];
-    
     if(isActivated) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isActivated"];
     }
