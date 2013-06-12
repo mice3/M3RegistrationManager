@@ -17,10 +17,10 @@ typedef enum{
 } M3RegistrationType;
 
 @protocol M3RegistartionManagerDelegate <NSObject>
--(void)registrationSuccess:(NSDictionary *)responseData;
+-(void)onSuccess:(NSDictionary *)responseData;
 @optional
 -(void)showTransparentView:(BOOL)showView;
--(void)registrationFailure:(NSError *)error;
+-(void)onFailure:(NSString *)errorString;
 @end
 
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
