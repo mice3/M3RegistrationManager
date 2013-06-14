@@ -52,9 +52,9 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
 
 -(void) registerDeviceWithRegistrationType:(M3RegistrationType)type
 {
-    NSDictionary *deviceDict = [M3RegistrationManager getUserDevicePostParamsDictionary];
-    
-    if(!deviceDict) {
+//    NSDictionary *deviceDict = [M3RegistrationManager getUserDevicePostParamsDictionary];
+//    
+//    if(!deviceDict) {
         switch (type) {
             case M3RegistrationTypeEmail:
                 [self registerDeviceWithEmail];
@@ -73,7 +73,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
             default:
                 break;
         }
-    }
+//    }
 }
 
 -(void) loginWithParameters:(NSDictionary *)parameters
@@ -139,6 +139,9 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
             }
         } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
+                if ([[parameters objectForKey:@"registrationType"] isEqualToString:@"facebook"]) {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFacebookConnected];
+                }
                 [self.delegate onRegistrationSuccess:JSON];
             }
         } else {
@@ -334,10 +337,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                                            NSError *error) {
             [[NSNotificationCenter defaultCenter] removeObserver:self];
             if (!error) {
-                [self registerDeviceWithFacebookEmail:[user objectForKey:@"email"]
-                                        andFacebookId:user.id
-                                       andAccessToken:[FBSession.activeSession accessToken]];
-//                [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession accessToken]];
+                [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession accessToken]];
             } else {
                 if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
                     [self.delegate showTransparentView:NO];
@@ -387,13 +387,6 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
 
 -(void) registerDeviceWithFacebookAccessToken:(NSString *)accessToken
 {
-    NSLog(@"%@", accessToken);
-}
-
--(void) registerDeviceWithFacebookEmail:(NSString *) email
-                          andFacebookId:(NSString *)facebookId
-                         andAccessToken:(NSString *)accessToken
-{
     NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -402,8 +395,6 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     [params setValue:@"facebook" forKey:@"registrationType"];
     [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
     [params setValue:accessToken forKey:@"accessToken"];
-    
-//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFacebookConnected];
     
     [self registerDeviceWithParameters:params];
 }
