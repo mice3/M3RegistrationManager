@@ -36,6 +36,8 @@ typedef enum{
  register with either FB, TW or email
 */
 -(void) registerDeviceWithRegistrationType:(M3RegistrationType)type;
+-(void) registerDeviceWithEmail:(NSString *)email
+                    andPassword:(NSString *)password;
 -(void) registerDeviceWithEmail:(NSString *)email;
 -(void) loginWithEmail:(NSString *)email
            andPassword:(NSString *)password;

@@ -162,8 +162,8 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
           andSecureCode:(NSString *) secureCode
          andIsActivated:(BOOL) isActivated
 {
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userDeviceId] forKey:@"userDeviceId"];
-    [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:@"secureCode"];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userDeviceId] forKey:kUserDeviceId];
+    [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:kSecureCode];
     
     if(isActivated) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isActivated"];
@@ -199,6 +199,26 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     }
     
     [params setValue:email forKey:@"email"];
+    
+    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
+    
+    [self registerDeviceWithParameters:params];
+}
+
+-(void) registerDeviceWithEmail:(NSString *)email
+                    andPassword:(NSString *)password
+{
+    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+        [self.delegate showTransparentView:YES];
+    }
+    
+    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    if (!params) {
+        params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    }
+    
+    [params setValue:email forKey:@"email"];
+    [params setValue:password forKey:@"password"];
     
     [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
     
@@ -379,7 +399,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
     
-    [params setValue:facebookId forKey:@"facebookId"];
+    [params setValue:@"facebook" forKey:@"registrationType"];
     [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
     [params setValue:accessToken forKey:@"accessToken"];
     
@@ -418,6 +438,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
+    [params setValue:@"twitter" forKey:@"registrationType"];
     [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
     [params setValue:accessToken forKey:@"accessToken"];
     
@@ -454,11 +475,6 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                 NSString *accessToken = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 
                 NSLog(@"Reverse Auth process returned: %@", accessToken);
-
-                NSArray *lines = [accessToken componentsSeparatedByString:@"&"];
-                NSString *twitterId = [[[lines objectAtIndex:2] componentsSeparatedByString:@"="] objectAtIndex:1];
-                NSString *screenName = [[[lines objectAtIndex:3] componentsSeparatedByString:@"="] objectAtIndex:1];
-
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self registerDeviceWithTwitterAccessToken:accessToken];
                 });

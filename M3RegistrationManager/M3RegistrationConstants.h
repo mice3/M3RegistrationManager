@@ -1,5 +1,5 @@
 // Server address
-#define kServerURL @"http://stroski.talcho.com/"
+#define kServerURL @"http://odocost.com"
 // Script addresses
 #define kServerGetFriends @"mobile_scripts/getFriends.php?cache=false"
 #define kServerGetFriendsCached @"mobile_scripts/getFriends.php?cache=true"
