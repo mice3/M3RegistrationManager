@@ -94,7 +94,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                                                                error: &error];
         if (error) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                [self.delegate onRegistrationFailure:[error description]];
+                [self.delegate onRegistrationFailure:text];
             }
         } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
@@ -135,7 +135,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                                                                error: &error];
         if (error) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                [self.delegate onRegistrationFailure:[error description]];
+                [self.delegate onRegistrationFailure:text];
             }
         } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
@@ -255,7 +255,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
          
          if (error) {
              if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                 [self.delegate onRegistrationFailure:[error description]];
+                 [self.delegate onRegistrationFailure:text];
              }
          } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
              if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
