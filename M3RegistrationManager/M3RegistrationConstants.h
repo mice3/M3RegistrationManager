@@ -19,3 +19,4 @@
 #define kActivateUser @"activateToCreateUser"
 #define kEmailChanged @"emailChanged"
 #define kError @"hasError"
+#define kFacebookConnected @"facebookConnected"
