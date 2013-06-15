@@ -14,6 +14,7 @@
 #define kUserId @"userId"
 #define kUserDeviceId @"userDeviceId"
 #define kSecureCode @"secureCode"
+#define kFacebookConnected @"facebookConnected"
 
 #define kLogInUser @"enterPasswordToCreateUser"
 #define kActivateUser @"activateToCreateUser"
