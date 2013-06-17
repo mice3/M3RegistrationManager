@@ -25,7 +25,7 @@
 @property (nonatomic, strong) UIView *transparentView;
 @end
 
-NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionStateChangedNotification";
+//NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionStateChangedNotification";
 
 @implementation M3RegistrationManager
 
@@ -63,7 +63,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
                 if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
                     [self.delegate showTransparentView:YES];
                 }
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateChanged:) name:FBSessionStateChangedNotification object:nil];
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateChanged:) name:kFBSessionStateChangedNotification object:nil];
                 [self registerDeviceWithFacebook];
                 break;
             case M3RegistrationTypeTwitter:
@@ -371,7 +371,7 @@ NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionS
     }
     
     [[NSNotificationCenter defaultCenter]
-     postNotificationName:FBSessionStateChangedNotification
+     postNotificationName:kFBSessionStateChangedNotification
      object:session];
     
     if (error) {
