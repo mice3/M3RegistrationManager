@@ -45,6 +45,7 @@ typedef enum{
 -(void) setUserDeviceId:(int) userDeviceId
           andSecureCode:(NSString *) secureCode
          andIsActivated:(BOOL) isActivated;
+-(void)activateUserDevice;
 // connects the current account with facebook
 -(void)connectWithFacebook;
 

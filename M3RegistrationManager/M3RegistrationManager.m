@@ -174,6 +174,11 @@
     
 }
 
+-(void) activateUserDevice
+{
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isActivated"];
+}
+
 -(void) showAlertViewWithText:(NSString *)text
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ApplicationTitle", nil)
