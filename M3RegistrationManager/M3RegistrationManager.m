@@ -350,6 +350,7 @@
             }
          }];
     } else {
+        [self.delegate showTransparentView:NO];
     }
 }
 
