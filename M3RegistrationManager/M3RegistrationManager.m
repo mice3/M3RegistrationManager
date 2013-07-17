@@ -350,7 +350,9 @@
             }
          }];
     } else {
-        [self.delegate showTransparentView:NO];
+        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+            [self.delegate showTransparentView:NO];
+        }
     }
 }
 
