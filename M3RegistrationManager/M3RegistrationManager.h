@@ -39,6 +39,7 @@ typedef enum{
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
 -(void) registerDeviceWithEmail:(NSString *)email;
+-(void) changeEmailTo:(NSString *)email;
 -(void) loginWithEmail:(NSString *)email
            andPassword:(NSString *)password;
 -(void)forgotPassword;

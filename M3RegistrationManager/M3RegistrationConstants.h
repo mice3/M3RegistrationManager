@@ -4,6 +4,7 @@
 #define kServerGetFriends @"mobile_scripts/getFriends.php?cache=false"
 #define kServerGetFriendsCached @"mobile_scripts/getFriends.php?cache=true"
 #define kServerCreateDevice @"mobile_scripts/createDevice.php"
+#define kServerChangeEmail @"mobile_scripts/changeEmail.php"
 #define kServerLogin @"/mobile_scripts/login.php"
 #define kServerGetUserById @"mobile_scripts/getUserById.php?id=%i"
 #define kServerGetMe @"mobile_scripts/getUserById.php"

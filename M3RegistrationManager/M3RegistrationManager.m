@@ -233,6 +233,59 @@
     [self registerDeviceWithParameters:params];
 }
 
+-(void) changeEmailTo:(NSString *)email
+{
+    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+        [self.delegate showTransparentView:YES];
+    }
+    
+    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    if (!params) {
+        params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    }
+    
+    [params setValue:email forKey:@"email"];
+    
+    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
+                            [NSURL URLWithString:kServerURL]];
+    
+    [client postPath:kServerChangeEmail parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+            [self.delegate showTransparentView:NO];
+        }
+        
+        NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        
+        NSError *error;
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
+                                                             options: NSJSONReadingMutableContainers
+                                                               error: &error];
+        if (error) {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                [self.delegate onRegistrationFailure:text];
+            }
+        } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
+                [self.delegate onRegistrationSuccess:JSON];
+            }
+        } else {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
+            [self.delegate showTransparentView:NO];
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+            [self.delegate onRegistrationFailure:[error description]];
+        }
+        
+    }];
+    
+}
+
 -(void) loginWithEmail:(NSString *)email
            andPassword:(NSString *)password
 {
