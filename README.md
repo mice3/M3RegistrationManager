@@ -10,6 +10,21 @@ Installation:
 -in M3RegistrationConstants fill out your info  
 -Start writing code!
 
+Optional:
+---------
+If you want FB login for users, that do not have native FB or the FB app add the following code to your appDelegate:
+
+#import <FacebookSDK/FacebookSDK.h>
+
+- (BOOL)application:(UIApplication *)application
+openURL:(NSURL *)url
+sourceApplication:(NSString *)sourceApplication
+annotation:(id)annotation {
+    // attempt to extract a token from the url
+    return [FBSession.activeSession handleOpenURL:url];
+}
+
+
 Requirements:
 -------------
 -iOS6.x or newer  
