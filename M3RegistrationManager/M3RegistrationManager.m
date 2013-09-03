@@ -122,6 +122,9 @@
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
                             [NSURL URLWithString:kServerURL]];
     
+#warning RokC: the following is only a temp solution, until our server cert is prepared
+    client.allowsInvalidSSLCertificate = YES;
+    
     [client postPath:kServerCreateDevice parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
             [self.delegate showTransparentView:NO];
