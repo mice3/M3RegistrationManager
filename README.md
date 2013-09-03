@@ -12,17 +12,21 @@ Installation:
 
 Optional:
 ---------
-If you want FB login for users, that do not have native FB or the FB app add the following code to your appDelegate:
+If you want FB login for users, that do not have native FB or the FB app add the following code to your AppDelegate.m:
 
+```objc
+// Import the FacebookSDK
 #import <FacebookSDK/FacebookSDK.h>
 
+// somewhere in the AppDelegate.m file add the following code
 - (BOOL)application:(UIApplication *)application
-openURL:(NSURL *)url
-sourceApplication:(NSString *)sourceApplication
-annotation:(id)annotation {
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
     // attempt to extract a token from the url
     return [FBSession.activeSession handleOpenURL:url];
 }
+```
 
 
 Requirements:
