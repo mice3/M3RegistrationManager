@@ -52,17 +52,11 @@
 
 -(void) registerDeviceWithRegistrationType:(M3RegistrationType)type
 {
-//    NSDictionary *deviceDict = [M3RegistrationManager getUserDevicePostParamsDictionary];
-//    
-//    if(!deviceDict) {
         switch (type) {
             case M3RegistrationTypeEmail:
                 [self registerDeviceWithEmail];
                 break;
             case M3RegistrationTypeFacebook:
-                if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-                    [self.delegate showTransparentView:YES];
-                }
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateChanged:) name:kFBSessionStateChangedNotification object:nil];
                 [self registerDeviceWithFacebook];
                 break;
@@ -82,10 +76,6 @@
                             [NSURL URLWithString:kServerURL]];
     
     [client postPath:kServerLogin parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-            [self.delegate showTransparentView:NO];
-        }
-        
         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         
         NSError *error;
@@ -106,9 +96,6 @@
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-            [self.delegate showTransparentView:NO];
-        }
         
         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
             [self.delegate onRegistrationFailure:[error description]];
@@ -126,10 +113,6 @@
     client.allowsInvalidSSLCertificate = YES;
     
     [client postPath:kServerCreateDevice parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-            [self.delegate showTransparentView:NO];
-        }
-        
         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
 
         NSError *error;
@@ -153,10 +136,6 @@
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-            [self.delegate showTransparentView:NO];
-        }
-        
         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
             [self.delegate onRegistrationFailure:[error description]];
         }
@@ -200,10 +179,6 @@
 
 -(void) registerDeviceWithEmail:(NSString *)email
 {
-    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-        [self.delegate showTransparentView:YES];
-    }
-    
     NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -219,10 +194,6 @@
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password
 {
-    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-        [self.delegate showTransparentView:YES];
-    }
-    
     NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -237,11 +208,7 @@
 }
 
 -(void) changeEmailTo:(NSString *)email
-{
-    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-        [self.delegate showTransparentView:YES];
-    }
-    
+{    
     NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -253,10 +220,6 @@
                             [NSURL URLWithString:kServerURL]];
     
     [client postPath:kServerChangeEmail parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-            [self.delegate showTransparentView:NO];
-        }
-        
         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         
         NSError *error;
@@ -277,10 +240,6 @@
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-            [self.delegate showTransparentView:NO];
-        }
-        
         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
             [self.delegate onRegistrationFailure:[error description]];
         }
@@ -292,10 +251,6 @@
 -(void) loginWithEmail:(NSString *)email
            andPassword:(NSString *)password
 {
-    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-        [self.delegate showTransparentView:YES];
-    }
-    
     NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -310,10 +265,6 @@
 
 -(void)forgotPassword
 {
-    if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-        [self.delegate showTransparentView:YES];
-    }
-    
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
                             [NSURL URLWithString:kServerURL]];
     
@@ -323,13 +274,7 @@
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
     
-    [client postPath:kServerForgotPassword
-          parameters:params
-             success:^(AFHTTPRequestOperation *operation, id responseObject)
-     {
-         if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-             [self.delegate showTransparentView:NO];
-         }
+    [client postPath:kServerForgotPassword parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
          NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
          NSError *error;
          
@@ -351,10 +296,6 @@
              }
          }
      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-             [self.delegate showTransparentView:NO];
-         }
-         
          if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
              [self.delegate onRegistrationFailure:[error description]];
          }
@@ -399,16 +340,8 @@
             [[NSNotificationCenter defaultCenter] removeObserver:self];
             if (!error) {
                 [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession accessToken]];
-            } else {
-                if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-                    [self.delegate showTransparentView:NO];
-                }
             }
          }];
-    } else {
-        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-            [self.delegate showTransparentView:NO];
-        }
     }
 }
 
@@ -521,9 +454,6 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != actionSheet.cancelButtonIndex) {
-        if ([self.delegate respondsToSelector:@selector(showTransparentView:)]) {
-            [self.delegate showTransparentView:YES];
-        }
         [self.apiManager performReverseAuthForAccount:self.accounts[buttonIndex] withHandler:^(NSData *responseData, NSError *error) {
             [[NSNotificationCenter defaultCenter] removeObserver:self];
             if (responseData) {
