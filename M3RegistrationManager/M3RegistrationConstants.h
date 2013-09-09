@@ -1,5 +1,5 @@
 // Server address
-//#define kServerURL @"http://odocost.com"
+#define kServerURL @"http://odocost.com"
 // Script addresses
 #define kServerGetFriends @"mobile_scripts/getFriends.php?cache=false"
 #define kServerGetFriendsCached @"mobile_scripts/getFriends.php?cache=true"
@@ -23,3 +23,5 @@
 #define kEmailChanged @"emailChanged"
 #define kError @"hasError"
 #define kFacebookConnected @"facebookConnected"
+
+#define kFBSessionStateChangedNotification @"it.mice3.odocost:FBSessionStateChangedNotification"

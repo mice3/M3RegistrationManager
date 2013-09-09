@@ -62,6 +62,7 @@
                 break;
             case M3RegistrationTypeTwitter:
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTwitterAccounts) name:ACAccountStoreDidChangeNotification object:nil];
+                
                 [self registerDeviceWithTwitter];
                 break;
             default:
