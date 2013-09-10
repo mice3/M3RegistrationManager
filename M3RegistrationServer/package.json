@@ -9,9 +9,9 @@
     "crypto": "0.0.3",
     "express": "3.3.5",
     "jade": "*",
-    "ouath": "0.9.10",
+    "oauth": "0.9.10",
     "request": "2.27.0",
-    "sequelize-mysql": "2.0.0",
+    "sequelize-mysql": "2.0.0-beta.0",
     "stylus": "*"
   }
 }

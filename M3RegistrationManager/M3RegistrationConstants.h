@@ -1,6 +1,6 @@
 // Server address
-//#define kServerURL @"http://registration.cresnik.com"
-#define kServerURL @"http://localhost:1337"
+#define kServerURL @"http://m3registrationexample.herokuapp.com"
+//#define kServerURL @"http://localhost:1337"
 // Script addresses
 #define kServerCreateDevice @"/createDevice"
 #define kServerChangeEmail @"user/changeEmail"

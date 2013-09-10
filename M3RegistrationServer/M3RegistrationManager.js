@@ -11,8 +11,8 @@ var request = require('request');
 
 var Sequelize = require('sequelize-mysql').sequelize
 
-//var connectionString = "mysql://b3eabb3e7d63ad:07433fb9@eu-cdbr-west-01.cleardb.com/heroku_251c5e3cf529663";
-var connectionString = "mysql://root:admin@127.0.0.1/registration";
+var connectionString = "mysql://b3eabb3e7d63ad:07433fb9@eu-cdbr-west-01.cleardb.com/heroku_251c5e3cf529663";
+//var connectionString = "mysql://root:admin@127.0.0.1/registration";
 
 var sequelize = new Sequelize(connectionString);
 var User = sequelize.import(__dirname + "/models/User")
