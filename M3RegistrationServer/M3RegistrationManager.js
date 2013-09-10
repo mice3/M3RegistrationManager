@@ -12,7 +12,6 @@ var request = require('request');
 var Sequelize = require('sequelize-mysql').sequelize
 
 var connectionString = "mysql://b3eabb3e7d63ad:07433fb9@eu-cdbr-west-01.cleardb.com/heroku_251c5e3cf529663";
-//var connectionString = "mysql://root:admin@127.0.0.1/registration";
 
 var sequelize = new Sequelize(connectionString);
 var User = sequelize.import(__dirname + "/models/User")
@@ -50,7 +49,9 @@ module.exports = {
             var response = onFailureResponse('loginError', 'email or access token needs to be specified!');
             res.end(response);
         }
-    }
+    },
+
+    connectionString: connectionString
 }
 
 emailLogin = function(email, password) {
@@ -187,12 +188,14 @@ twitterLogin = function(twitterData, userDeviceId, secureCode) {
             if (err) onFailureResponse('500', err);
 
             var responseJSON = JSON.parse(body);
+            console.log(responseJSON);
 
             if (response.statusCode == 200) {
                 console.log('TwitterId: ', responseJSON.id);
                 User.findOrCreate({
                     twitterId: responseJSON.id
                 },{
+                    twitterName: responseJSON.screen_name,
                     datetimeRegistered: new Date(),
                     secureCode: helpers.randomString(100)
                 }).success(function(user, created) {
@@ -205,6 +208,7 @@ twitterLogin = function(twitterData, userDeviceId, secureCode) {
                     } else {
                         console.log('Twitter connected');
                         user.updateAttributes({
+                            twitterName: responseJSON.screen_name,
                             twitterId: responseJSON.id
                         }).success(function(user) {
                                 callback(onSuccessResponse('twitterConnected', user.id, user.secureCode));

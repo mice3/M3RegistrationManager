@@ -18,7 +18,8 @@ module.exports = function(sequelize, DataTypes) {
 
         facebookId: Sequelize.STRING,
         googleId: Sequelize.STRING,
-        twitterId: Sequelize.STRING
+        twitterId: Sequelize.STRING,
+        twitterName: Sequelize.STRING
     }, {
         freezeTableName: true
     })

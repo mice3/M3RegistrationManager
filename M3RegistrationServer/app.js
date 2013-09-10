@@ -26,10 +26,7 @@ app.use(app.router);
 app.use(require('stylus').middleware(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-//var connectionString = "mysql://b3eabb3e7d63ad:07433fb9@eu-cdbr-west-01.cleardb.com/heroku_251c5e3cf529663";
-var connectionString = "mysql://root:admin@127.0.0.1/registration";
-var sequelize = new Sequelize(connectionString);
+var sequelize = new Sequelize(registrationManager.connectionString);
 
 // development only
 if ('development' == app.get('env')) {
@@ -40,6 +37,28 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.post('/createDevice', function(req, res) {
     registrationManager.createDevice(req, res);
+});
+
+app.get('/showUsers', function(req, res) {
+    var User = sequelize.import(__dirname + "/models/User");
+
+    User.findAll().success(function(users) {
+        res.writeHead(200, {"Content-Type": "application/json"});
+        for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            if (user.facebookId) {
+                res.write('User registered with facebook email '+ user.email);
+            } else if (user.googleId) {
+                res.write('User registered with google email '+ user.email);
+            } else if (user.twitterId) {
+                res.write('User registered with twitter id '+ user.twitterName);
+            } else {
+                res.write('User registered with email '+ user.email);
+            }
+            res.write('\n');
+        }
+        res.end();
+    });
 });
 
 http.createServer(app).listen(app.get('port'), function(){
