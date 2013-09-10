@@ -47,15 +47,14 @@ app.get('/showUsers', function(req, res) {
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
             if (user.facebookId) {
-                res.write('User registered with facebook email '+ user.email);
+                res.write('facebook '+ user.email + '\n');
             } else if (user.googleId) {
-                res.write('User registered with google email '+ user.email);
+                res.write('google '+ user.email + '\n');
             } else if (user.twitterId) {
-                res.write('User registered with twitter id '+ user.twitterName);
+                res.write('twitter '+ user.twitterName + '\n');
             } else {
-                res.write('User registered with email '+ user.email);
+                res.write('email '+ user.email + '\n');
             }
-            res.write('\n');
         }
         res.end();
     });

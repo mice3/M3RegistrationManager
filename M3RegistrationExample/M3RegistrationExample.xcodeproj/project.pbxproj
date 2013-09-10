@@ -17,6 +17,7 @@
 		42DE1DFD17DDFA4F0055EBC4 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DF217DDFA4F0055EBC4 /* TWAPIManager.m */; };
 		42DE1DFE17DDFA4F0055EBC4 /* TwitterReverseOAuthResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DF417DDFA4F0055EBC4 /* TwitterReverseOAuthResponse.m */; };
 		42DE1DFF17DDFA4F0055EBC4 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DF617DDFA4F0055EBC4 /* TWSignedRequest.m */; };
+		42EEE8F117DF85B900AB0C50 /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42EEE8F017DF85B900AB0C50 /* UserViewController.m */; };
 		42FEB24A17DDE84700B40B76 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FEB24917DDE84700B40B76 /* UIKit.framework */; };
 		42FEB24C17DDE84700B40B76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FEB24B17DDE84700B40B76 /* Foundation.framework */; };
 		42FEB24E17DDE84700B40B76 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FEB24D17DDE84700B40B76 /* CoreGraphics.framework */; };
@@ -59,6 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		42017CFF17DF7FFB002B5CCF /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
 		42DE1DC717DDF57B0055EBC4 /* RegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationViewController.m; sourceTree = "<group>"; };
 		42DE1DE417DDFA4F0055EBC4 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		42DE1DE517DDFA4F0055EBC4 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 		42DE1DF417DDFA4F0055EBC4 /* TwitterReverseOAuthResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterReverseOAuthResponse.m; sourceTree = "<group>"; };
 		42DE1DF517DDFA4F0055EBC4 /* TWSignedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWSignedRequest.h; sourceTree = "<group>"; };
 		42DE1DF617DDFA4F0055EBC4 /* TWSignedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWSignedRequest.m; sourceTree = "<group>"; };
+		42EEE8F017DF85B900AB0C50 /* UserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewController.m; sourceTree = "<group>"; };
 		42FEB24617DDE84700B40B76 /* M3RegistrationExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = M3RegistrationExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FEB24917DDE84700B40B76 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		42FEB24B17DDE84700B40B76 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -240,6 +243,8 @@
 				42FEB25817DDE84700B40B76 /* AppDelegate.h */,
 				42FEB25917DDE84700B40B76 /* AppDelegate.m */,
 				42FEB26117DDE84700B40B76 /* MainStoryboard.storyboard */,
+				42017CFF17DF7FFB002B5CCF /* UserViewController.h */,
+				42EEE8F017DF85B900AB0C50 /* UserViewController.m */,
 				42FEB25017DDE84700B40B76 /* Supporting Files */,
 			);
 			path = M3RegistrationExample;
@@ -435,6 +440,7 @@
 				42DE1DFD17DDFA4F0055EBC4 /* TWAPIManager.m in Sources */,
 				42DE1DFE17DDFA4F0055EBC4 /* TwitterReverseOAuthResponse.m in Sources */,
 				42DE1DFF17DDFA4F0055EBC4 /* TWSignedRequest.m in Sources */,
+				42EEE8F117DF85B900AB0C50 /* UserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

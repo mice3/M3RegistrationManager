@@ -3,6 +3,7 @@
 //#define kServerURL @"http://localhost:1337"
 // Script addresses
 #define kServerCreateDevice @"/createDevice"
+#define kGetUsers @"/showUsers"
 #define kServerChangeEmail @"user/changeEmail"
 #define kServerLogin @"user/login"
 #define kServerForgotPassword @"user/forgotPassword"

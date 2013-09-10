@@ -200,10 +200,10 @@ twitterLogin = function(twitterData, userDeviceId, secureCode) {
                     secureCode: helpers.randomString(100)
                 }).success(function(user, created) {
                     if (created) {
-                        console.log('User with twitter it %s created', responseJSON.id);
+                        console.log('User with twitter name %s created', responseJSON.twitterName);
                         callback(onSuccessResponse('userRegistered', user.id, user.secureCode));
                     } else if (user.twitterId === responseJSON.id) {
-                        console.log('User with twitter id %s logged in', responseJSON.id);
+                        console.log('User with twitter name %s logged in', responseJSON.twitterName);
                         callback(onSuccessResponse('userAuthenticated', user.id, user.secureCode));
                     } else {
                         console.log('Twitter connected');
