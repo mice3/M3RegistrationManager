@@ -36,15 +36,49 @@
 
 - (IBAction)facebookButtonClickHandler:(id)sender
 {
-    [self.registrationManager registerDeviceWithRegistrationType:M3RegistrationTypeFacebook];
+    [self.registrationManager registerDeviceWithFacebook];
 }
 
 - (IBAction)twitterButtonClickHandler:(id)sender
 {
-    [self.registrationManager registerDeviceWithRegistrationType:M3RegistrationTypeTwitter];
+    [self.registrationManager registerDeviceWithTwitter];
 }
 
-- (IBAction)emailButtonClickHandler:(id)sender {
+- (IBAction)emailButtonClickHandler:(id)sender
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Email login"
+                                                        message:@"Enter email and password"
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                                              otherButtonTitles:nil];
+    
+    alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    alertView.tag = 1;
+    [alertView show];
+}
+
+- (IBAction)resetButtonClickHandler:(id)sender
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"M3Registration"
+                                                        message:@"User data reset"
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                                              otherButtonTitles:nil];
+    [alertView show];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSecureCode];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDeviceActivated];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDeviceId];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(alertView.tag == 1) {
+		NSString *email = [alertView textFieldAtIndex:0].text;
+		NSString *password = [alertView textFieldAtIndex:1].text;
+        
+        [self.registrationManager registerDeviceWithEmail:email andPassword:password];
+		NSLog(@"Username: %@\nPassword: %@", email, password);
+	}
 }
 
 - (void)refreshTwitterAccounts
@@ -65,12 +99,23 @@
 
 - (void)onRegistrationSuccess:(NSDictionary *)responseData
 {
-    NSLog(@"Registration succeded! %@", responseData);
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Registration succeded"
+                                                        message:[responseData objectForKey:@"status"]
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                                              otherButtonTitles:nil];
+    [alertView show];
 }
 
 - (void)onRegistrationFailure:(NSString *)errorString
 {
-    NSLog(@"Registration failed! %@", errorString);
+    NSLog(@"%@", errorString);
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Registration failed"
+                                                        message:errorString
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                                              otherButtonTitles:nil];
+    [alertView show];
     
 }
 

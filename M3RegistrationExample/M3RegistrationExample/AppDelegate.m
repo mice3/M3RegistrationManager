@@ -12,7 +12,10 @@
 
 @implementation AppDelegate
 
-// somewhere in the AppDelegate.m file add the following code
+/* 
+ the following code is a fallback method for users that do not use
+ the FB app / native FB but still want to be logged in with FB
+*/
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication

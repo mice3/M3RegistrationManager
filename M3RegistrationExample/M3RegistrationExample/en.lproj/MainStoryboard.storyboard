@@ -51,15 +51,30 @@
                                     <action selector="emailButtonClickHandler:" destination="2" eventType="touchUpInside" id="RYr-qg-2s5"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6T5-MT-ivc">
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Clear User Data">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetButtonClickHandler:" destination="2" eventType="touchUpInside" id="nNb-bZ-yQi"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="A72-HG-b8L" firstAttribute="top" secondItem="VOH-bN-urS" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="990-x0-HYs"/>
                             <constraint firstItem="yCX-g7-Zj7" firstAttribute="top" secondItem="A72-HG-b8L" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="AJV-6a-by1"/>
+                            <constraint firstItem="6T5-MT-ivc" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="I52-hJ-cyp"/>
                             <constraint firstItem="A72-HG-b8L" firstAttribute="centerX" secondItem="yCX-g7-Zj7" secondAttribute="centerX" type="default" id="V55-VM-5og"/>
                             <constraint firstItem="VOH-bN-urS" firstAttribute="top" secondItem="3" secondAttribute="top" constant="166" id="ZcH-aC-09v"/>
                             <constraint firstItem="yCX-g7-Zj7" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" type="default" id="fGb-XS-vRF"/>
                             <constraint firstItem="A72-HG-b8L" firstAttribute="centerX" secondItem="VOH-bN-urS" secondAttribute="centerX" type="default" id="g1k-Em-Iqe"/>
+                            <constraint firstItem="6T5-MT-ivc" firstAttribute="top" secondItem="3" secondAttribute="top" constant="20" symbolic="YES" type="default" id="n9u-hM-t5F"/>
                         </constraints>
                     </view>
                     <connections>
@@ -70,11 +85,6 @@
             </objects>
         </scene>
     </scenes>
-    <classes>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

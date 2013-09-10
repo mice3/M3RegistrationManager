@@ -26,10 +26,6 @@
 	<string>571597216208922</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>TWITTER_CONSUMER_KEY</key>
-	<string>LaCI4JSXV1XkngJgc0A7A</string>
-	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>WIIye2uxaJUnIhSqZbw16oeI9O68YZubfawT3Np2RnY</string>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard</string>
 	<key>UIRequiredDeviceCapabilities</key>

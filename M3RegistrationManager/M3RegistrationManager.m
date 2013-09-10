@@ -50,27 +50,6 @@
     return self;
 }
 
--(void) registerDeviceWithRegistrationType:(M3RegistrationType)type
-{
-        switch (type) {
-            case M3RegistrationTypeEmail:
-                [self registerDeviceWithEmail];
-                break;
-            case M3RegistrationTypeFacebook:
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateChanged:) name:kFBSessionStateChangedNotification object:nil];
-                [self registerDeviceWithFacebook];
-                break;
-            case M3RegistrationTypeTwitter:
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTwitterAccounts) name:ACAccountStoreDidChangeNotification object:nil];
-                
-                [self registerDeviceWithTwitter];
-                break;
-            default:
-                break;
-        }
-//    }
-}
-
 -(void) loginWithParameters:(NSDictionary *)parameters
 {
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
@@ -110,9 +89,6 @@
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
                             [NSURL URLWithString:kServerURL]];
     
-#warning RokC: the following is only a temp solution, until our server cert is prepared
-    client.allowsInvalidSSLCertificate = YES;
-    
     [client postPath:kServerCreateDevice parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
 
@@ -144,39 +120,7 @@
     }];
 }
 
--(void) setUserDeviceId:(int) userDeviceId
-          andSecureCode:(NSString *) secureCode
-         andIsActivated:(BOOL) isActivated
-{
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userDeviceId] forKey:kUserDeviceId];
-    [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:kSecureCode];
-    
-    if(isActivated) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isActivated"];
-    }
-    
-}
-
--(void) activateUserDevice
-{
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isActivated"];
-}
-
--(void) showAlertViewWithText:(NSString *)text
-{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ApplicationTitle", nil)
-                                                        message:text
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-                                              otherButtonTitles:nil];
-    [alertView show];
-}
-
 #pragma mark - Email registration
--(void) registerDeviceWithEmail
-{
-    
-}
 
 -(void) registerDeviceWithEmail:(NSString *)email
 {
@@ -328,6 +272,10 @@
 
 -(void) registerDeviceWithFacebook
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sessionStateChanged:)
+                                                 name:kFBSessionStateChangedNotification
+                                               object:nil];
     [self openSessionWithAllowLoginUI:YES];
 }
 
@@ -397,15 +345,25 @@
     [self registerDeviceWithParameters:params];
 }
 
+-(void) loginWithFacebook
+{
+    
+}
+
 -(void) connectWithFacebook
 {
     // links the user with his FB profile
-    [self registerDeviceWithRegistrationType:M3RegistrationTypeFacebook];
+    [self registerDeviceWithFacebook];
 }
 
 #pragma mark - Twitter registration
 -(void) registerDeviceWithTwitter
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshTwitterAccounts)
+                                                 name:ACAccountStoreDidChangeNotification
+                                               object:nil];
+    
     if ([TWAPIManager isLocalTwitterAccountAvailable]) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Choose an Account" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
         
@@ -455,7 +413,8 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != actionSheet.cancelButtonIndex) {
-        [self.apiManager performReverseAuthForAccount:self.accounts[buttonIndex] withHandler:^(NSData *responseData, NSError *error) {
+        [self.apiManager performReverseAuthForAccount:self.accounts[buttonIndex]
+                                          withHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
             [[NSNotificationCenter defaultCenter] removeObserver:self];
             if (responseData) {
                 NSString *accessToken = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
@@ -493,6 +452,13 @@
     }
 }
 
+-(void) loginWithTwitter
+{
+    
+}
+
+
+#pragma mark get / set post parameters
 +(NSDictionary *) getUserDevicePostParamsDictionary
 {
     NSString * deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDeviceId];
@@ -504,6 +470,25 @@
     } else {
         return nil;
     }
+}
+
+-(void) setUserDeviceId:(int) userDeviceId
+          andSecureCode:(NSString *) secureCode
+         andIsActivated:(BOOL) isActivated
+{
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userDeviceId] forKey:kUserDeviceId];
+    [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:kSecureCode];
+    
+    if(isActivated) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDeviceActivated];
+    }
+    
+    NSLog(@"%@", [M3RegistrationManager getUserDevicePostParamsDictionary]);
+}
+
+-(void) activateUserDevice
+{
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isActivated"];
 }
 
 @end
