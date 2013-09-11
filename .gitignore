@@ -4,3 +4,4 @@ M3RegistrationExample/M3RegistrationExample.xcodeproj/project.xcworkspace/xcuser
 M3RegistrationExample/M3RegistrationExample.xcodeproj/xcuserdata/dark.xcuserdatad/xcschemes/xcschememanagement.plist
 M3RegistrationServer/.idea/*
 M3RegistrationServer/node_modules/*
+.gitignore
