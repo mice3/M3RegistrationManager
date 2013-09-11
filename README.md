@@ -5,10 +5,16 @@ Installation:
 -------------
 -Add the Social.framework, AdSupport.framework, libsqlite3.dylib, Accounts.framework, Twitter.framework, Security.framework  
 -In your XCode Project, drag the M3RegistrationManager folder and AFNetworking (under the main folder) into your project  
--add the -fno-objc-arc Compiler Flags for the NSData+Base64.m, OAuth+Additions.m and OAuth.m files  
 -Import M3RegistrationManager.h  
--in M3RegistrationConstants fill out your info  
+- create a M3RegistrationConstants.h file which needs to containt the following constants:  
+            a) #define kServerURL // url of your backend server  
+            b) #define kServerCreateDevice // createDevice script (check the M3RegistrationServer for tips or a basic implementation)  
+            c) #define kTWConsumerKey // your Twitter Consumer key (only if Twitter login is required)  
+            d) #define kTWConsumerSecret // your Twitter Consumer Secret (only if Twitter login is required)  
+            e) #define kFBSessionStateChangedNotification // Facebook state change notification (generaly it looks like com.acme.appName:FBSessionStateChangedNotification    
 -Start writing code!
+
+The repository is in an alpha state, so if you have any questions or trouble, dont hesitate to ask :)
 
 Optional:
 ---------
