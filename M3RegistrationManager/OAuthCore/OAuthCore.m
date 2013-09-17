@@ -13,9 +13,9 @@
 static NSInteger SortParameter(NSString *key1, NSString *key2, void *context) {
     NSComparisonResult r = [key1 compare:key2];
     if(r == NSOrderedSame) { // compare by value in this case
-        NSDictionary *dict = (NSDictionary *)context;
-        NSString *value1 = dict[key1];
-        NSString *value2 = dict[key2];
+        NSDictionary *dict = (__bridge NSDictionary *)context;
+        NSString *value1 = [dict objectForKey:key1];
+        NSString *value2 = [dict objectForKey:key2];
         return [value1 compare:value2];
     }
     return r;
@@ -33,75 +33,77 @@ NSString *OAuthorizationHeader(NSURL *url, NSString *method, NSData *body, NSStr
     NSString *_oAuthTimestamp = [NSString stringWithFormat:@"%d", (int)[[NSDate date] timeIntervalSince1970]];
     NSString *_oAuthSignatureMethod = @"HMAC-SHA1";
     NSString *_oAuthVersion = @"1.0";
-    
+
     NSMutableDictionary *oAuthAuthorizationParameters = [NSMutableDictionary dictionary];
-    oAuthAuthorizationParameters[@"oauth_nonce"] = _oAuthNonce;
-    oAuthAuthorizationParameters[@"oauth_timestamp"] = _oAuthTimestamp;
-    oAuthAuthorizationParameters[@"oauth_signature_method"] = _oAuthSignatureMethod;
-    oAuthAuthorizationParameters[@"oauth_version"] = _oAuthVersion;
-    oAuthAuthorizationParameters[@"oauth_consumer_key"] = _oAuthConsumerKey;
+    [oAuthAuthorizationParameters setObject:_oAuthNonce forKey:@"oauth_nonce"];
+    [oAuthAuthorizationParameters setObject:_oAuthTimestamp forKey:@"oauth_timestamp"];
+    [oAuthAuthorizationParameters setObject:_oAuthSignatureMethod forKey:@"oauth_signature_method"];
+    [oAuthAuthorizationParameters setObject:_oAuthVersion forKey:@"oauth_version"];
+    [oAuthAuthorizationParameters setObject:_oAuthConsumerKey forKey:@"oauth_consumer_key"];
     if(_oAuthToken)
-        oAuthAuthorizationParameters[@"oauth_token"] = _oAuthToken;
-    
+        [oAuthAuthorizationParameters setObject:_oAuthToken forKey:@"oauth_token"];
+
     // get query and body parameters
     NSDictionary *additionalQueryParameters = [NSURL ab_parseURLQueryString:[url query]];
     NSDictionary *additionalBodyParameters = nil;
     if(body) {
-        NSString *string = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
+        NSString *string = [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding];
         if(string) {
             additionalBodyParameters = [NSURL ab_parseURLQueryString:string];
         }
     }
-    
+
     // combine all parameters
-    NSMutableDictionary *parameters = [[oAuthAuthorizationParameters mutableCopy] autorelease];
-    if(additionalQueryParameters) [parameters addEntriesFromDictionary:additionalQueryParameters];
-    if(additionalBodyParameters) [parameters addEntriesFromDictionary:additionalBodyParameters];
-    
+    NSMutableDictionary *parameters = [oAuthAuthorizationParameters mutableCopy];
+    if (additionalQueryParameters)
+		[parameters addEntriesFromDictionary:additionalQueryParameters];
+    if (additionalBodyParameters)
+		[parameters addEntriesFromDictionary:additionalBodyParameters];
+
     // -> UTF-8 -> RFC3986
     NSMutableDictionary *encodedParameters = [NSMutableDictionary dictionary];
     for(NSString *key in parameters) {
-        NSString *value = parameters[key];
-        encodedParameters[[key ab_RFC3986EncodedString]] = [value ab_RFC3986EncodedString];
+        NSString *value = [parameters objectForKey:key];
+        [encodedParameters setObject:[value ab_RFC3986EncodedString] forKey:[key ab_RFC3986EncodedString]];
     }
-    
-    NSArray *sortedKeys = [[encodedParameters allKeys] sortedArrayUsingFunction:SortParameter context:encodedParameters];
-    
+
+    NSArray *sortedKeys = [[encodedParameters allKeys] sortedArrayUsingFunction:SortParameter context:(__bridge void *)(encodedParameters)];
+
     NSMutableArray *parameterArray = [NSMutableArray array];
     for(NSString *key in sortedKeys) {
-        [parameterArray addObject:[NSString stringWithFormat:@"%@=%@", key, encodedParameters[key]]];
+        [parameterArray addObject:[NSString stringWithFormat:@"%@=%@", key, [encodedParameters objectForKey:key]]];
     }
     NSString *normalizedParameterString = [parameterArray componentsJoinedByString:@"&"];
-    
+
     NSString *normalizedURLString = [NSString stringWithFormat:@"%@://%@%@", [url scheme], [url host], [url path]];
-    
+
     NSString *signatureBaseString = [NSString stringWithFormat:@"%@&%@&%@",
                                      [method ab_RFC3986EncodedString],
                                      [normalizedURLString ab_RFC3986EncodedString],
                                      [normalizedParameterString ab_RFC3986EncodedString]];
-    
+
     // Updated this from original to allow us to pass in nil to method
     NSString *key = [NSString stringWithFormat:@"%@&%@",
                      [_oAuthConsumerSecret ab_RFC3986EncodedString],
                      (_oAuthTokenSecret) ? [_oAuthTokenSecret ab_RFC3986EncodedString] : @""];
-    
+
     NSData *signature = HMAC_SHA1(signatureBaseString, key);
     NSString *base64Signature = [signature base64EncodedString];
-    
-    NSMutableDictionary *authorizationHeaderDictionary = [[oAuthAuthorizationParameters mutableCopy] autorelease];
-    authorizationHeaderDictionary[@"oauth_signature"] = base64Signature;
-    
+
+    NSMutableDictionary *authorizationHeaderDictionary = [oAuthAuthorizationParameters mutableCopy];
+    [authorizationHeaderDictionary setObject:base64Signature forKey:@"oauth_signature"];
+
     NSMutableArray *authorizationHeaderItems = [NSMutableArray array];
     for(NSString *key in authorizationHeaderDictionary) {
-        NSString *value = authorizationHeaderDictionary[key];
+        NSString *value = [authorizationHeaderDictionary objectForKey:key];
         [authorizationHeaderItems addObject:[NSString stringWithFormat:@"%@=\"%@\"",
                                              [key ab_RFC3986EncodedString],
                                              [value ab_RFC3986EncodedString]]];
     }
-    
+
     NSString *authorizationHeaderString = [authorizationHeaderItems componentsJoinedByString:@", "];
-    
+
     authorizationHeaderString = [NSString stringWithFormat:@"OAuth %@", authorizationHeaderString];
-    
+
     return authorizationHeaderString;
 }

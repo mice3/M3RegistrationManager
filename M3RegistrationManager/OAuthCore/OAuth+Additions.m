@@ -16,11 +16,11 @@
     for(NSString *pair in pairs) {
         NSArray *keyValue = [pair componentsSeparatedByString:@"="];
         if([keyValue count] == 2) {
-            NSString *key = keyValue[0];
-            NSString *value = keyValue[1];
+            NSString *key = [keyValue objectAtIndex:0];
+            NSString *value = [keyValue objectAtIndex:1];
             value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             if(key && value)
-                dict[key] = value;
+                [dict setObject:value forKey:key];
         }
     }
     return [NSDictionary dictionaryWithDictionary:dict];
@@ -60,8 +60,10 @@
 {
     CFUUIDRef u = CFUUIDCreate(kCFAllocatorDefault);
     CFStringRef s = CFUUIDCreateString(kCFAllocatorDefault, u);
+	NSString* n = ((__bridge NSString *)s).copy;
     CFRelease(u);
-    return [(NSString *)s autorelease];
+	CFRelease(s);
+    return n;
 }
 
 @end

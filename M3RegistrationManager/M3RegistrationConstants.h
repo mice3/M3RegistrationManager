@@ -1,24 +1,22 @@
 // Server address
-//#define kServerURL @"http://odocost.com"
+#define kServerURL @"http://m3registrationexample.herokuapp.com"
+//#define kServerURL @"http://localhost:1337"
 // Script addresses
-#define kServerGetFriends @"mobile_scripts/getFriends.php?cache=false"
-#define kServerGetFriendsCached @"mobile_scripts/getFriends.php?cache=true"
-//#define kServerCreateDevice @"mobile_scripts/createDevice.php"
-#define kServerLogin @"/mobile_scripts/login.php"
-#define kServerGetUserById @"mobile_scripts/getUserById.php?id=%i"
-#define kServerGetMe @"mobile_scripts/getUserById.php"
-#define kServerForgotPassword @"/mobile_scripts/forgotPassword.php"
-#define kServerUnlockAchievement @"mobile_scripts/saveUserBadge.php"
-#define kServerResetAchievements @"mobile_scripts/resetAllBadges.php"
+#define kServerCreateDevice @"/createDevice"
+#define kGetUsers @"/showUsers"
+#define kServerChangeEmail @"user/changeEmail"
+#define kServerLogin @"user/login"
+#define kServerForgotPassword @"user/forgotPassword"
 
-#define kUserId @"userId"
+// other constants
+#define kFacebookConnected @"facebookConnected"
 #define kUserDeviceId @"userDeviceId"
 #define kSecureCode @"secureCode"
-#define kStatus @"status"
-#define kFacebookConnected @"facebookConnected"
+#define kDeviceActivated @"isActivated"
 
-#define kLogInUser @"enterPasswordToCreateUser"
-#define kActivateUser @"activateToCreateUser"
-#define kEmailChanged @"emailChanged"
-#define kError @"hasError"
-#define kFacebookConnected @"facebookConnected"
+// Twitter consumer key and secret
+#define kTWConsumerKey @"LaCI4JSXV1XkngJgc0A7A"
+#define kTWConsumerSecret @"WIIye2uxaJUnIhSqZbw16oeI9O68YZubfawT3Np2RnY"
+
+// Facebook state change notification
+#define kFBSessionStateChangedNotification @"it.mice3.m3registrationexample:FBSessionStateChangedNotification"

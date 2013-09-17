@@ -6,32 +6,32 @@
  *
  *  Copyright (c) 2008-2009, Jim Dovey
  *  All rights reserved.
- *
+ *  
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
  *  are met:
  *
  *  Redistributions of source code must retain the above copyright notice,
  *  this list of conditions and the following disclaimer.
- *
+ *  
  *  Redistributions in binary form must reproduce the above copyright
  *  notice, this list of conditions and the following disclaimer in the
  *  documentation and/or other materials provided with the distribution.
- *
+ *  
  *  Neither the name of this project's author nor the names of its
  *  contributors may be used to endorse or promote products derived from
  *  this software without specific prior written permission.
  *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
  *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
  *  HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
  *  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
@@ -68,33 +68,33 @@
 //  alternative would be to use OpenSSL's base64 BIO routines, but that would
 //  require that everything using this code also link against openssl. Should
 //  this become part of a larger independently-compiled framework that could be
-//  an option, but for now, since it's just a class for inclusion into other
+//  an option, but for now, since it's just a class for inclusion into other 
 //  things, I'll resort to using the Omni version
 
 @implementation NSData (Base64)
 
 //
-// Base-64 (RFC-1521) support. The following is based on mpack-1.5 (ftp://ftp.andrew.cmu.edu/pub/mpack/)
+// Base-64 (RFC-1521) support.  The following is based on mpack-1.5 (ftp://ftp.andrew.cmu.edu/pub/mpack/)
 //
 
 #define XX 127
 static char index_64[256] = {
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,62, XX,XX,XX,63,
-    52,53,54,55, 56,57,58,59, 60,61,XX,XX, XX,XX,XX,XX,
-    XX, 0, 1, 2,  3, 4, 5, 6,  7, 8, 9,10, 11,12,13,14,
-    15,16,17,18, 19,20,21,22, 23,24,25,XX, XX,XX,XX,XX,
-    XX,26,27,28, 29,30,31,32, 33,34,35,36, 37,38,39,40,
-    41,42,43,44, 45,46,47,48, 49,50,51,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,62, XX,XX,XX,63,
+52,53,54,55, 56,57,58,59, 60,61,XX,XX, XX,XX,XX,XX,
+XX, 0, 1, 2,  3, 4, 5, 6,  7, 8, 9,10, 11,12,13,14,
+15,16,17,18, 19,20,21,22, 23,24,25,XX, XX,XX,XX,XX,
+XX,26,27,28, 29,30,31,32, 33,34,35,36, 37,38,39,40,
+41,42,43,44, 45,46,47,48, 49,50,51,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
+XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
 };
 #define CHAR64(c) (index_64[(unsigned char)(c)])
 
@@ -103,7 +103,7 @@ static char index_64[256] = {
 
 + (NSData *) dataFromBase64String: (NSString *) base64String
 {
-    return ( [[[self alloc] initWithBase64String: base64String] autorelease] );
+    return [[self alloc] initWithBase64String: base64String];
 }
 
 - (id) initWithBase64String: (NSString *) base64String
@@ -253,7 +253,7 @@ static inline void output64Chunk( int c1, int c2, int c3, int pads, NSMutableDat
         }
     }
     
-    return ( [[[NSString allocWithZone: [self zone]] initWithData: buffer encoding: NSASCIIStringEncoding] autorelease] );
+    return [[NSString alloc] initWithData: buffer encoding: NSASCIIStringEncoding];
 }
 
 @end

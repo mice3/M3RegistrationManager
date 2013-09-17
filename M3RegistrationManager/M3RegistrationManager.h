@@ -10,12 +10,6 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "M3RegistrationConstants.h"
 
-typedef enum{
-    M3RegistrationTypeFacebook,
-    M3RegistrationTypeTwitter,
-    M3RegistrationTypeEmail
-} M3RegistrationType;
-
 @protocol M3RegistartionManagerDelegate <NSObject>
 -(void)onRegistrationSuccess:(NSDictionary *)responseData;
 @optional
@@ -32,26 +26,34 @@ typedef enum{
  procedure takes place
 */
 -(id)initWithViewController:(UIViewController *)viewController;
-/*
- register with either FB, TW or email
-*/
--(void) registerDeviceWithRegistrationType:(M3RegistrationType)type;
+
+// register new user
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
 -(void) registerDeviceWithEmail:(NSString *)email;
+-(void) registerDeviceWithFacebook;
+-(void) registerDeviceWithTwitter;
+
+// login an existing user
 -(void) loginWithEmail:(NSString *)email
            andPassword:(NSString *)password;
+// TODO: separate login and register methods for Twitter & Facebook
+-(void) loginWithFacebook;
+-(void) loginWithTwitter;
+
+// other methods
+-(void) changeEmailTo:(NSString *)email;
 -(void)forgotPassword;
 -(void) setUserDeviceId:(int) userDeviceId
           andSecureCode:(NSString *) secureCode
          andIsActivated:(BOOL) isActivated;
 -(void)activateUserDevice;
++(NSDictionary *) getUserDevicePostParamsDictionary;
+
 // connects the current account with facebook
 -(void)connectWithFacebook;
 
+// twitter reverse auth method
 - (void)obtainAccessToAccountsWithBlock:(void (^)(BOOL))block;
-
-// Class metohds
-+(NSDictionary *) getUserDevicePostParamsDictionary;
 
 @end
