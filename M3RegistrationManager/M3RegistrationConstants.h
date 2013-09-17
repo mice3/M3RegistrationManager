@@ -1,9 +1,9 @@
 // Server address
-#define kServerURL @"http://odocost.com"
+//#define kServerURL @"http://odocost.com"
 // Script addresses
 #define kServerGetFriends @"mobile_scripts/getFriends.php?cache=false"
 #define kServerGetFriendsCached @"mobile_scripts/getFriends.php?cache=true"
-#define kServerCreateDevice @"mobile_scripts/createDevice.php"
+//#define kServerCreateDevice @"mobile_scripts/createDevice.php"
 #define kServerLogin @"/mobile_scripts/login.php"
 #define kServerGetUserById @"mobile_scripts/getUserById.php?id=%i"
 #define kServerGetMe @"mobile_scripts/getUserById.php"
