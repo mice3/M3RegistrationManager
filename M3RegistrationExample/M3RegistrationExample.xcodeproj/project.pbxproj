@@ -61,7 +61,7 @@
 
 /* Begin PBXFileReference section */
 		42017CFF17DF7FFB002B5CCF /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
-		42B7CB2417E9BC4500F4F32D /* M3RegistrationConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M3RegistrationConstants.h; sourceTree = "<group>"; };
+		42B7CB2517E9BD4800F4F32D /* M3RegistrationConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = M3RegistrationConstants.h; path = ../../../../../../.Trash/M3RegistrationConstants.h; sourceTree = "<group>"; };
 		42DE1DC717DDF57B0055EBC4 /* RegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationViewController.m; sourceTree = "<group>"; };
 		42DE1DE417DDFA4F0055EBC4 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		42DE1DE517DDFA4F0055EBC4 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
@@ -237,7 +237,7 @@
 		42FEB24F17DDE84700B40B76 /* M3RegistrationExample */ = {
 			isa = PBXGroup;
 			children = (
-				42B7CB2417E9BC4500F4F32D /* M3RegistrationConstants.h */,
+				42B7CB2517E9BD4800F4F32D /* M3RegistrationConstants.h */,
 				42FEB26417DDE84700B40B76 /* RegistrationViewController.h */,
 				42DE1DC717DDF57B0055EBC4 /* RegistrationViewController.m */,
 				42FEB25817DDE84700B40B76 /* AppDelegate.h */,
