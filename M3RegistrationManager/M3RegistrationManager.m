@@ -321,13 +321,9 @@
      object:session];
     
     if (error) {
-        UIAlertView *alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"Error"
-                                  message:error.localizedDescription
-                                  delegate:nil
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil];
-        [alertView show];
+        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+            [self.delegate onRegistrationFailure:[error description]];
+        }
     }
 }
 
@@ -374,8 +370,9 @@
         sheet.cancelButtonIndex = [sheet addButtonWithTitle:@"Cancel"];
         [sheet showInView:self.viewController.view];
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Accounts" message:@"Please configure a Twitter account in Settings.app" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
+        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+            [self.delegate onRegistrationFailure:@"Please configure a Twitter account in Settings.app"];
+        }
     }
 }
 
@@ -405,8 +402,9 @@
         [sheet showInView:self.viewController.view];
     }
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Accounts" message:@"Please configure a Twitter account in Settings.app" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
+        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+            [self.delegate onRegistrationFailure:@"Please configure a Twitter account in Settings.app"];
+        }
     }
 }
 
@@ -425,6 +423,9 @@
                 });
             }
             else {
+                if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                    [self.delegate onRegistrationFailure:[error localizedDescription]];
+                }
                 NSLog(@"Reverse Auth process failed. Error returned was: %@\n", [error localizedDescription]);
             }
         }];
