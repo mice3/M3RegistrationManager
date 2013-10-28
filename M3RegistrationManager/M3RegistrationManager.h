@@ -11,10 +11,10 @@
 #import "M3RegistrationConstants.h"
 
 @protocol M3RegistartionManagerDelegate <NSObject>
--(void)onRegistrationSuccess:(NSDictionary *)responseData;
+- (void)onRegistrationSuccess:(NSDictionary *)responseData;
 @optional
--(void)showTransparentView:(BOOL)showView;
--(void)onRegistrationFailure:(NSString *)errorString;
+- (void)onRegistrationCancel;
+- (void)onRegistrationFailure:(NSString *)errorString;
 @end
 
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>

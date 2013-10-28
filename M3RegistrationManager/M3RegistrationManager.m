@@ -43,7 +43,7 @@
         logingInLabel.backgroundColor = [UIColor clearColor];
         logingInLabel.textAlignment = NSTextAlignmentCenter;
         logingInLabel.text = @"Logging in...";
-//        logingInLabel.font = [UIFont fontWithName:kFontHouschaBold size:30];
+        //        logingInLabel.font = [UIFont fontWithName:kFontHouschaBold size:30];
         logingInLabel.textColor = [UIColor whiteColor];
         [self.transparentView addSubview:logingInLabel];
     }
@@ -91,7 +91,7 @@
     
     [client postPath:kServerCreateDevice parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-
+        
         NSError *error;
         NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
                                                              options: NSJSONReadingMutableContainers
@@ -153,7 +153,7 @@
 }
 
 -(void) changeEmailTo:(NSString *)email
-{    
+{
     NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -220,32 +220,32 @@
     }
     
     [client postPath:kServerForgotPassword parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-         NSError *error;
-         
-         NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
-                                                              options: NSJSONReadingMutableContainers
-                                                                error: &error];
-         
-         if (error) {
-             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                 [self.delegate onRegistrationFailure:text];
-             }
-         } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
-             if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-                 [self.delegate onRegistrationSuccess:JSON];
-             }
-         } else {
-             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                 [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
-             }
-         }
-     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-             [self.delegate onRegistrationFailure:[error description]];
-         }
-         
-     }];
+        NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSError *error;
+        
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
+                                                             options: NSJSONReadingMutableContainers
+                                                               error: &error];
+        
+        if (error) {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                [self.delegate onRegistrationFailure:text];
+            }
+        } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
+                [self.delegate onRegistrationSuccess:JSON];
+            }
+        } else {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+            [self.delegate onRegistrationFailure:[error description]];
+        }
+        
+    }];
 }
 
 
@@ -286,10 +286,10 @@
          startForMeWithCompletionHandler:^(FBRequestConnection *connection,
                                            id<FBGraphUser> user,
                                            NSError *error) {
-            [[NSNotificationCenter defaultCenter] removeObserver:self];
-            if (!error) {
-                [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession accessToken]];
-            }
+             [[NSNotificationCenter defaultCenter] removeObserver:self];
+             if (!error) {
+                 [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession accessToken]];
+             }
          }];
     }
 }
@@ -413,37 +413,41 @@
     if (buttonIndex != actionSheet.cancelButtonIndex) {
         [self.apiManager performReverseAuthForAccount:self.accounts[buttonIndex]
                                           withHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-            [[NSNotificationCenter defaultCenter] removeObserver:self];
-            if (responseData) {
-                NSString *accessToken = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-
-                NSLog(@"Reverse Auth process returned: %@", accessToken);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self registerDeviceWithTwitterAccessToken:accessToken];
-                });
-            }
-            else {
-                if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                    [self.delegate onRegistrationFailure:[error localizedDescription]];
-                }
-                NSLog(@"Reverse Auth process failed. Error returned was: %@\n", [error localizedDescription]);
-            }
-        }];
+                                              [[NSNotificationCenter defaultCenter] removeObserver:self];
+                                              if (responseData) {
+                                                  NSString *accessToken = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                                                  
+                                                  NSLog(@"Reverse Auth process returned: %@", accessToken);
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      [self registerDeviceWithTwitterAccessToken:accessToken];
+                                                  });
+                                              }
+                                              else {
+                                                  if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                                                      [self.delegate onRegistrationFailure:[error localizedDescription]];
+                                                  }
+                                                  NSLog(@"Reverse Auth process failed. Error returned was: %@\n", [error localizedDescription]);
+                                              }
+                                          }];
+    } else {
+        if ([self.delegate respondsToSelector:@selector(onRegistrationCancel)]) {
+            [self.delegate onRegistrationCancel];
+        }
     }
 }
 
 - (void)obtainAccessToAccountsWithBlock:(void (^)(BOOL))block
 {
     ACAccountType *twitterType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-
+    
     ACAccountStoreRequestAccessCompletionHandler handler = ^(BOOL granted, NSError *error) {
         if (granted) {
             self.accounts = [self.accountStore accountsWithAccountType:twitterType];
         }
-
+        
         block(granted);
     };
-
+    
     //  This method changed in iOS6. If the new version isn't available, fall back to the original (which means that we're running on iOS5+).
     if ([self.accountStore respondsToSelector:@selector(requestAccessToAccountsWithType:options:completion:)]) {
         [self.accountStore requestAccessToAccountsWithType:twitterType options:nil completion:handler];
