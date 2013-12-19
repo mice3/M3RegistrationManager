@@ -316,9 +316,8 @@
             break;
     }
     
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:kFBSessionStateChangedNotification
-     object:session];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFBSessionStateChangedNotification
+                                                        object:session];
     
     if (error) {
         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
