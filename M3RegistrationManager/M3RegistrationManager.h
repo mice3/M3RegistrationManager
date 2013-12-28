@@ -10,6 +10,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "M3RegistrationConstants.h"
 
+#define kAuthenticationTokenKey @"authenticationToken"
+
 @protocol M3RegistartionManagerDelegate <NSObject>
 - (void)onRegistrationSuccess:(NSDictionary *)responseData;
 @optional
@@ -44,9 +46,18 @@
 // other methods
 -(void) changeEmailTo:(NSString *)email;
 -(void)forgotPassword;
+
+
++(NSDictionary *) getAuthenticationDictionary;
+-(void) setAuthenticationDictionary: (NSDictionary *) dic;
+
+-(void) setUserId:(int) userDeviceId
+    andSecureCode:(NSString *) secureCode;
+
 -(void) setUserDeviceId:(int) userDeviceId
           andSecureCode:(NSString *) secureCode
          andIsActivated:(BOOL) isActivated;
+
 -(void)activateUserDevice;
 +(NSDictionary *) getUserDevicePostParamsDictionary;
 

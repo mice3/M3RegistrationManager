@@ -17,6 +17,7 @@
 #define kUserDeviceId @"userDeviceId"
 
 
+
 @interface M3RegistrationManager ()
 @property (nonatomic, strong) ACAccountStore *accountStore;
 @property (nonatomic, strong) TWAPIManager *apiManager;
@@ -62,6 +63,9 @@
         NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
                                                              options: NSJSONReadingMutableContainers
                                                                error: &error];
+        
+        NSLog(@"%@", text);
+        
         if (error) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
                 [self.delegate onRegistrationFailure:text];
@@ -89,8 +93,10 @@
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
                             [NSURL URLWithString:kServerURL]];
     
-    [client postPath:kServerCreateDevice parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [client postPath:kServerRegister parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"%@", text);
         
         NSError *error;
         NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
@@ -105,6 +111,9 @@
                 if ([[parameters objectForKey:@"registrationType"] isEqualToString:@"facebook"]) {
                     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFacebookConnected];
                 }
+                
+                [self setAuthenticationDictionary:[JSON objectForKey:kAuthenticationTokenKey]]; // TODO: this
+                
                 [self.delegate onRegistrationSuccess:JSON];
             }
         } else {
@@ -464,17 +473,46 @@
 
 
 #pragma mark get / set post parameters
-+(NSDictionary *) getUserDevicePostParamsDictionary
++(NSDictionary *) getUserDevicePostParamsDictionary // TODO: rename to getUserAuthenticationDictionary
 {
     NSString * deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDeviceId];
+    NSString * userId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserId];
     NSString * secureCode = [[NSUserDefaults standardUserDefaults] stringForKey:kSecureCode];
     
-    if (deviceId && secureCode) {
-        return @{kUserDeviceId: deviceId,
-                 kSecureCode: secureCode};
+    if (secureCode) {
+        if(userId) {
+            return @{kUserId: userId,
+                     kSecureCode: secureCode};
+        } else {
+            return @{kUserDeviceId: deviceId,
+                     kSecureCode: secureCode};
+        }
+        
     } else {
         return nil;
     }
+}
++(NSDictionary *) getAuthenticationDictionary
+{
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:kAuthenticationTokenKey];
+}
+
+-(void) setAuthenticationDictionary:(NSDictionary *)dic
+{
+    [[NSUserDefaults standardUserDefaults] setValue:dic forKey:kAuthenticationTokenKey];
+}
+
+-(void) setUserId:(int) userId
+    andSecureCode:(NSString *) secureCode
+{
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userId] forKey:kUserId];
+    [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:kSecureCode];
+    
+
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDeviceActivated];
+    
+    
+    NSLog(@"%@", [M3RegistrationManager getUserDevicePostParamsDictionary]);
 }
 
 -(void) setUserDeviceId:(int) userDeviceId
