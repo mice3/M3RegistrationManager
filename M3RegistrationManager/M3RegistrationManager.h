@@ -17,7 +17,7 @@
 - (void)onRegistrationFailure:(NSString *)errorString;
 @end
 
-@interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
+@interface M3RegistrationManager : NSObject <UIActionSheetDelegate, FBLoginViewDelegate>
 
 @property (nonatomic, strong) id<M3RegistartionManagerDelegate> delegate;
 
