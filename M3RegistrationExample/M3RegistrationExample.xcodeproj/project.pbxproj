@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42046EAA1870A712009ACDAF /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42046EA91870A712009ACDAF /* FacebookSDK.framework */; };
 		42DE1DC817DDF57B0055EBC4 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DC717DDF57B0055EBC4 /* RegistrationViewController.m */; };
-		42DE1DF717DDFA4F0055EBC4 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DE1DE417DDFA4F0055EBC4 /* FacebookSDK.framework */; };
-		42DE1DF817DDFA4F0055EBC4 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 42DE1DE517DDFA4F0055EBC4 /* FacebookSDKResources.bundle */; };
 		42DE1DF917DDFA4F0055EBC4 /* M3RegistrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DE817DDFA4F0055EBC4 /* M3RegistrationManager.m */; };
 		42DE1DFA17DDFA4F0055EBC4 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DEB17DDFA4F0055EBC4 /* NSData+Base64.m */; };
 		42DE1DFB17DDFA4F0055EBC4 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DED17DDFA4F0055EBC4 /* OAuth+Additions.m */; };
@@ -61,10 +60,9 @@
 
 /* Begin PBXFileReference section */
 		42017CFF17DF7FFB002B5CCF /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
+		42046EA91870A712009ACDAF /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		42B7CB2617E9BD8800F4F32D /* M3RegistrationConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M3RegistrationConstants.h; sourceTree = "<group>"; };
 		42DE1DC717DDF57B0055EBC4 /* RegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationViewController.m; sourceTree = "<group>"; };
-		42DE1DE417DDFA4F0055EBC4 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		42DE1DE517DDFA4F0055EBC4 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
 		42DE1DE717DDFA4F0055EBC4 /* M3RegistrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M3RegistrationManager.h; sourceTree = "<group>"; };
 		42DE1DE817DDFA4F0055EBC4 /* M3RegistrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M3RegistrationManager.m; sourceTree = "<group>"; };
 		42DE1DEA17DDFA4F0055EBC4 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -137,10 +135,10 @@
 				42FEB2C317DDE87E00B40B76 /* Accounts.framework in Frameworks */,
 				42FEB2C117DDE87A00B40B76 /* Twitter.framework in Frameworks */,
 				42FEB2BF17DDE87400B40B76 /* Social.framework in Frameworks */,
+				42046EAA1870A712009ACDAF /* FacebookSDK.framework in Frameworks */,
 				42FEB24A17DDE84700B40B76 /* UIKit.framework in Frameworks */,
 				42FEB24C17DDE84700B40B76 /* Foundation.framework in Frameworks */,
 				42FEB24E17DDE84700B40B76 /* CoreGraphics.framework in Frameworks */,
-				42DE1DF717DDFA4F0055EBC4 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,8 +158,7 @@
 		42DE1DE317DDFA4F0055EBC4 /* M3RegistrationManager */ = {
 			isa = PBXGroup;
 			children = (
-				42DE1DE417DDFA4F0055EBC4 /* FacebookSDK.framework */,
-				42DE1DE517DDFA4F0055EBC4 /* FacebookSDKResources.bundle */,
+				42046EA91870A712009ACDAF /* FacebookSDK.framework */,
 				42DE1DE717DDFA4F0055EBC4 /* M3RegistrationManager.h */,
 				42DE1DE817DDFA4F0055EBC4 /* M3RegistrationManager.m */,
 				42DE1DE917DDFA4F0055EBC4 /* OAuthCore */,
@@ -386,7 +383,6 @@
 				42FEB25E17DDE84700B40B76 /* Default@2x.png in Resources */,
 				42FEB26017DDE84700B40B76 /* Default-568h@2x.png in Resources */,
 				42FEB26317DDE84700B40B76 /* MainStoryboard.storyboard in Resources */,
-				42DE1DF817DDFA4F0055EBC4 /* FacebookSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,7 +547,8 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../M3RegistrationManager\"",
+					"\\\"$(SRCROOT)/../M3RegistrationManager\\\"",
+					/Users/dark/Documents/dev/mice3/M3RegistrationManager/M3RegistrationManager,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "M3RegistrationExample/M3RegistrationExample-Prefix.pch";
@@ -566,7 +563,8 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../M3RegistrationManager\"",
+					"\\\"$(SRCROOT)/../M3RegistrationManager\\\"",
+					/Users/dark/Documents/dev/mice3/M3RegistrationManager/M3RegistrationManager,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "M3RegistrationExample/M3RegistrationExample-Prefix.pch";
