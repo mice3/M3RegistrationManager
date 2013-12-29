@@ -93,7 +93,7 @@
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
                             [NSURL URLWithString:kServerURL]];
     
-    [client postPath:kServerRegister parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [client postPath:kServerCreateDevice parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         
         NSLog(@"%@", text);
