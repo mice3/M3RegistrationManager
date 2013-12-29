@@ -131,7 +131,7 @@
 
 -(void) registerDeviceWithEmail:(NSString *)email
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -146,7 +146,7 @@
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -161,7 +161,7 @@
 
 -(void) changeEmailTo:(NSString *)email
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -203,7 +203,7 @@
 -(void) loginWithEmail:(NSString *)email
            andPassword:(NSString *)password
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -220,7 +220,7 @@
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
                             [NSURL URLWithString:kServerURL]];
     
-    NSDictionary *params = [M3RegistrationManager getUserDevicePostParamsDictionary];
+    NSDictionary *params = [M3RegistrationManager getUserAuthenticationDictionary];
     
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -376,7 +376,7 @@
 
 -(void) registerDeviceWithFacebookAccessToken:(NSString *)accessToken
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -425,7 +425,7 @@
 
 -(void) registerDeviceWithTwitterAccessToken:(NSString *)accessToken
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserDevicePostParamsDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -511,25 +511,6 @@
 
 
 #pragma mark get / set post parameters
-+(NSDictionary *) getUserDevicePostParamsDictionary // TODO: rename to getUserAuthenticationDictionary
-{
-    NSString * deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDeviceId];
-    NSString * userId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserId];
-    NSString * secureCode = [[NSUserDefaults standardUserDefaults] stringForKey:kSecureCode];
-    
-    if (secureCode) {
-        if(userId) {
-            return @{kUserId: userId,
-                     kSecureCode: secureCode};
-        } else {
-            return @{kUserDeviceId: deviceId,
-                     kSecureCode: secureCode};
-        }
-        
-    } else {
-        return nil;
-    }
-}
 +(NSDictionary *) getAuthenticationDictionary
 {
     return [[NSUserDefaults standardUserDefaults] dictionaryForKey:kAuthenticationTokenKey];
@@ -538,38 +519,6 @@
 -(void) setAuthenticationDictionary:(NSDictionary *)dic
 {
     [[NSUserDefaults standardUserDefaults] setValue:dic forKey:kAuthenticationTokenKey];
-}
-
--(void) setUserId:(int) userId
-    andSecureCode:(NSString *) secureCode
-{
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userId] forKey:kUserId];
-    [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:kSecureCode];
-    
-
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDeviceActivated];
-    
-    
-    NSLog(@"%@", [M3RegistrationManager getUserDevicePostParamsDictionary]);
-}
-
--(void) setUserDeviceId:(int) userDeviceId
-          andSecureCode:(NSString *) secureCode
-         andIsActivated:(BOOL) isActivated
-{
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:userDeviceId] forKey:kUserDeviceId];
-    [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:kSecureCode];
-    
-    if(isActivated) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDeviceActivated];
-    }
-    
-    NSLog(@"%@", [M3RegistrationManager getUserDevicePostParamsDictionary]);
-}
-
--(void) activateUserDevice
-{
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isActivated"];
 }
 
 @end
