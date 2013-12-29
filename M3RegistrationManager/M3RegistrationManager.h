@@ -10,11 +10,13 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "M3RegistrationConstants.h"
 
+#define kAuthenticationTokenKey @"authenticationToken"
+
 @protocol M3RegistartionManagerDelegate <NSObject>
--(void)onRegistrationSuccess:(NSDictionary *)responseData;
+- (void)onRegistrationSuccess:(NSDictionary *)responseData;
 @optional
--(void)showTransparentView:(BOOL)showView;
--(void)onRegistrationFailure:(NSString *)errorString;
+- (void)onRegistrationCancel;
+- (void)onRegistrationFailure:(NSString *)errorString;
 @end
 
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
@@ -44,9 +46,18 @@
 // other methods
 -(void) changeEmailTo:(NSString *)email;
 -(void)forgotPassword;
+
+
++(NSDictionary *) getAuthenticationDictionary;
+-(void) setAuthenticationDictionary: (NSDictionary *) dic;
+
+-(void) setUserId:(int) userDeviceId
+    andSecureCode:(NSString *) secureCode;
+
 -(void) setUserDeviceId:(int) userDeviceId
           andSecureCode:(NSString *) secureCode
          andIsActivated:(BOOL) isActivated;
+
 -(void)activateUserDevice;
 +(NSDictionary *) getUserDevicePostParamsDictionary;
 
