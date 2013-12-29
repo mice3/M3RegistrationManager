@@ -16,10 +16,10 @@
 - (void)onRegistrationSuccess:(NSDictionary *)responseData;
 @optional
 - (void)onRegistrationCancel;
-- (void)onRegistrationFailure:(NSString *)errorString;
+- (void)onRegistrationFailure:(id)errorResponse;
 @end
 
-@interface M3RegistrationManager : NSObject <UIActionSheetDelegate, FBLoginViewDelegate>
+@interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
 
 @property (nonatomic, strong) id<M3RegistartionManagerDelegate> delegate;
 

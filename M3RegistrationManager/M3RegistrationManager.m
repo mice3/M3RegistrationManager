@@ -260,38 +260,22 @@
 /*
  * Opens a Facebook session and optionally shows the login UX.
  */
-- (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI
-{
-    NSArray *permissions = [[NSArray alloc] initWithObjects:
-                            @"email",
-                            nil];
-    
-    return [FBSession openActiveSessionWithReadPermissions:permissions
-                                              allowLoginUI:allowLoginUI
-                                         completionHandler:^(FBSession *session,
-                                                             FBSessionState state,
-                                                             NSError *error) {
-                                             [self sessionStateChanged:session
-                                                                 state:state
-                                                                 error:error];
-                                         }];
-}
-
 
 -(void) registerDeviceWithFacebook
 {
     if (FBSession.activeSession.state == FBSessionStateOpen
         || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
         
-        // Close the session and remove the access token from the cache
-        // The session state handler (in the app delegate) will be called automatically
-        [FBSession.activeSession closeAndClearTokenInformation];
-        
-        // If the session state is not any of the two "open" states when the button is clicked
+        [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession.accessTokenData accessToken]];
     } else {
         // Open a session showing the user the login UI
         // You must ALWAYS ask for basic_info permissions when opening a session
-        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+        NSArray *permissions = [[NSArray alloc] initWithObjects:
+                                @"basic_info",
+                                @"email",
+                                nil];
+        
+        [FBSession openActiveSessionWithReadPermissions:permissions
                                            allowLoginUI:YES
                                       completionHandler:
          ^(FBSession *session, FBSessionState state, NSError *error) {
@@ -299,38 +283,6 @@
              // Retrieve the app delegate
              // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
              [self sessionStateChanged:session state:state error:error];
-         }];
-    }
-    
-    return
-    
-    
-    
-    [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession accessToken]];
-    return;
-    FBLoginView *loginview = [[FBLoginView alloc] initWithReadPermissions:[NSArray arrayWithObject:@"email"]];
-    
-    loginview.delegate = self;
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(sessionStateChanged:)
-//                                                 name:kFBSessionStateChangedNotification
-//                                               object:nil];
-//    
-//    [self openSessionWithAllowLoginUI:YES];
-}
-
-- (void)sessionStateChanged:(NSNotification*)notification
-{
-    if (FBSession.activeSession.isOpen) {
-        [FBRequestConnection
-         startForMeWithCompletionHandler:^(FBRequestConnection *connection,
-                                           id<FBGraphUser> user,
-                                           NSError *error) {
-             [[NSNotificationCenter defaultCenter] removeObserver:self];
-             if (!error) {
-                 [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession accessToken]];
-             }
          }];
     }
 }
@@ -347,13 +299,12 @@
         NSLog(@"Session opened");
         // Show the user the logged-in UI
 //        [self userLoggedIn];
+        [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession.accessTokenData accessToken]];
         return;
     }
     if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
         // If the session is closed
         NSLog(@"Session closed");
-        // Show the user the logged-out UI
-//        [self userLoggedOut];
     }
     
     // Handle errors
@@ -395,13 +346,15 @@
         [FBSession.activeSession closeAndClearTokenInformation];
         // Show the user the logged-out UI
 //        [self userLoggedOut];
+        
+        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+            [self.delegate onRegistrationFailure:alertText];
+        }
     }
     
     
     
     
-    
-    return;
     switch (state) {
         case FBSessionStateOpen:
             if (!error) {
@@ -418,12 +371,6 @@
             break;
         default:
             break;
-    }
-    
-    if (error) {
-        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-            [self.delegate onRegistrationFailure:[error description]];
-        }
     }
 }
 
