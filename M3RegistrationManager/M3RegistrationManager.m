@@ -131,7 +131,7 @@
 
 -(void) registerDeviceWithEmail:(NSString *)email
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -146,7 +146,7 @@
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -161,7 +161,7 @@
 
 -(void) changeEmailTo:(NSString *)email
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -203,7 +203,7 @@
 -(void) loginWithEmail:(NSString *)email
            andPassword:(NSString *)password
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -220,7 +220,7 @@
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
                             [NSURL URLWithString:kServerURL]];
     
-    NSDictionary *params = [M3RegistrationManager getUserAuthenticationDictionary];
+    NSDictionary *params = [M3RegistrationManager getAuthenticationDictionary];
     
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -376,7 +376,7 @@
 
 -(void) registerDeviceWithFacebookAccessToken:(NSString *)accessToken
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
@@ -425,7 +425,7 @@
 
 -(void) registerDeviceWithTwitterAccessToken:(NSString *)accessToken
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getUserAuthenticationDictionary] mutableCopy];
+    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }

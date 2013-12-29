@@ -59,7 +59,7 @@
          andIsActivated:(BOOL) isActivated;
 
 -(void)activateUserDevice;
-+(NSDictionary *) getUserAuthenticationDictionary;
++(NSDictionary *) getAuthenticationDictionary;
 
 // connects the current account with facebook
 -(void)connectWithFacebook;
