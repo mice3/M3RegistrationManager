@@ -521,4 +521,9 @@
     [[NSUserDefaults standardUserDefaults] setValue:dic forKey:kAuthenticationTokenKey];
 }
 
+- (void)removeAuthenticationDictionary
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAuthenticationTokenKey];
+}
+
 @end
