@@ -49,6 +49,11 @@
     return self;
 }
 
+-(void) onAuthenticationSuccess: (NSDictionary *) json
+{
+    [self setAuthenticationDictionary:[json objectForKey:kAuthenticationTokenKey]]; // TODO: this
+}
+
 -(void) loginWithParameters:(NSDictionary *)parameters
 {
     AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
@@ -70,6 +75,9 @@
             }
         } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
+                
+                [self onAuthenticationSuccess:JSON];
+                
                 [self.delegate onRegistrationSuccess:JSON];
             }
         } else {
@@ -110,7 +118,9 @@
                     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFacebookConnected];
                 }
                 
-                [self setAuthenticationDictionary:[JSON objectForKey:kAuthenticationTokenKey]]; // TODO: this
+                NSLog(@"authenticationToken; %@", [JSON objectForKey:kAuthenticationTokenKey]);
+                
+                [self onAuthenticationSuccess:JSON];
                 
                 [self.delegate onRegistrationSuccess:JSON];
             }
