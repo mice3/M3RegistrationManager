@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		42046EAA1870A712009ACDAF /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42046EA91870A712009ACDAF /* FacebookSDK.framework */; };
+		425D82901871CECA00E55BB9 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 425D82891871CCF800E55BB9 /* XCTest.framework */; };
+		425D82911871CECA00E55BB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FEB24B17DDE84700B40B76 /* Foundation.framework */; };
+		425D82921871CECA00E55BB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FEB24917DDE84700B40B76 /* UIKit.framework */; };
+		425D82981871CECA00E55BB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 425D82961871CECA00E55BB9 /* InfoPlist.strings */; };
+		425D829A1871CECA00E55BB9 /* M3RegistrationExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 425D82991871CECA00E55BB9 /* M3RegistrationExampleTests.m */; };
+		425D82A21871CF3500E55BB9 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 425D82A11871CF3400E55BB9 /* FacebookSDK.framework */; };
+		425D82A31871CF5B00E55BB9 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 425D82A11871CF3400E55BB9 /* FacebookSDK.framework */; };
 		42DE1DC817DDF57B0055EBC4 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DC717DDF57B0055EBC4 /* RegistrationViewController.m */; };
 		42DE1DF917DDFA4F0055EBC4 /* M3RegistrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DE817DDFA4F0055EBC4 /* M3RegistrationManager.m */; };
 		42DE1DFA17DDFA4F0055EBC4 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DE1DEB17DDFA4F0055EBC4 /* NSData+Base64.m */; };
@@ -27,11 +34,6 @@
 		42FEB25E17DDE84700B40B76 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42FEB25D17DDE84700B40B76 /* Default@2x.png */; };
 		42FEB26017DDE84700B40B76 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42FEB25F17DDE84700B40B76 /* Default-568h@2x.png */; };
 		42FEB26317DDE84700B40B76 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42FEB26117DDE84700B40B76 /* MainStoryboard.storyboard */; };
-		42FEB26E17DDE84700B40B76 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FEB26D17DDE84700B40B76 /* SenTestingKit.framework */; };
-		42FEB26F17DDE84700B40B76 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FEB24917DDE84700B40B76 /* UIKit.framework */; };
-		42FEB27017DDE84700B40B76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FEB24B17DDE84700B40B76 /* Foundation.framework */; };
-		42FEB27817DDE84700B40B76 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 42FEB27617DDE84700B40B76 /* InfoPlist.strings */; };
-		42FEB27B17DDE84700B40B76 /* M3RegistrationExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 42FEB27A17DDE84700B40B76 /* M3RegistrationExampleTests.m */; };
 		42FEB29817DDE86100B40B76 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 42FEB28617DDE86100B40B76 /* AFHTTPClient.m */; };
 		42FEB29917DDE86100B40B76 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 42FEB28817DDE86100B40B76 /* AFHTTPRequestOperation.m */; };
 		42FEB29A17DDE86100B40B76 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 42FEB28A17DDE86100B40B76 /* AFImageRequestOperation.m */; };
@@ -49,7 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		42FEB27117DDE84700B40B76 /* PBXContainerItemProxy */ = {
+		425D829C1871CECA00E55BB9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 42FEB23E17DDE84700B40B76 /* Project object */;
 			proxyType = 1;
@@ -61,6 +63,13 @@
 /* Begin PBXFileReference section */
 		42017CFF17DF7FFB002B5CCF /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
 		42046EA91870A712009ACDAF /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		425D82891871CCF800E55BB9 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		425D828F1871CECA00E55BB9 /* M3RegistrationExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = M3RegistrationExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		425D82951871CECA00E55BB9 /* M3RegistrationExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "M3RegistrationExampleTests-Info.plist"; sourceTree = "<group>"; };
+		425D82971871CECA00E55BB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		425D82991871CECA00E55BB9 /* M3RegistrationExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = M3RegistrationExampleTests.m; sourceTree = "<group>"; };
+		425D829B1871CECA00E55BB9 /* M3RegistrationExampleTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "M3RegistrationExampleTests-Prefix.pch"; sourceTree = "<group>"; };
+		425D82A11871CF3400E55BB9 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../M3RegistrationManager/FacebookSDK.framework; sourceTree = "<group>"; };
 		42B7CB2617E9BD8800F4F32D /* M3RegistrationConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M3RegistrationConstants.h; sourceTree = "<group>"; };
 		42DE1DC717DDF57B0055EBC4 /* RegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationViewController.m; sourceTree = "<group>"; };
 		42DE1DE717DDFA4F0055EBC4 /* M3RegistrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M3RegistrationManager.h; sourceTree = "<group>"; };
@@ -93,12 +102,7 @@
 		42FEB25F17DDE84700B40B76 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		42FEB26217DDE84700B40B76 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		42FEB26417DDE84700B40B76 /* RegistrationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegistrationViewController.h; sourceTree = "<group>"; };
-		42FEB26C17DDE84700B40B76 /* M3RegistrationExampleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = M3RegistrationExampleTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FEB26D17DDE84700B40B76 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		42FEB27517DDE84700B40B76 /* M3RegistrationExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "M3RegistrationExampleTests-Info.plist"; sourceTree = "<group>"; };
-		42FEB27717DDE84700B40B76 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		42FEB27917DDE84700B40B76 /* M3RegistrationExampleTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = M3RegistrationExampleTests.h; sourceTree = "<group>"; };
-		42FEB27A17DDE84700B40B76 /* M3RegistrationExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = M3RegistrationExampleTests.m; sourceTree = "<group>"; };
 		42FEB28517DDE86100B40B76 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		42FEB28617DDE86100B40B76 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		42FEB28717DDE86100B40B76 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -126,11 +130,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		425D828C1871CECA00E55BB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				425D82A31871CF5B00E55BB9 /* FacebookSDK.framework in Frameworks */,
+				425D82901871CECA00E55BB9 /* XCTest.framework in Frameworks */,
+				425D82921871CECA00E55BB9 /* UIKit.framework in Frameworks */,
+				425D82911871CECA00E55BB9 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		42FEB24317DDE84700B40B76 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				42FEB2C717DDE88900B40B76 /* AdSupport.framework in Frameworks */,
+				425D82A21871CF3500E55BB9 /* FacebookSDK.framework in Frameworks */,
 				42FEB2C517DDE88400B40B76 /* libsqlite3.dylib in Frameworks */,
 				42FEB2C317DDE87E00B40B76 /* Accounts.framework in Frameworks */,
 				42FEB2C117DDE87A00B40B76 /* Twitter.framework in Frameworks */,
@@ -142,19 +158,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42FEB26817DDE84700B40B76 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				42FEB26E17DDE84700B40B76 /* SenTestingKit.framework in Frameworks */,
-				42FEB26F17DDE84700B40B76 /* UIKit.framework in Frameworks */,
-				42FEB27017DDE84700B40B76 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		425D82931871CECA00E55BB9 /* M3RegistrationExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				425D82991871CECA00E55BB9 /* M3RegistrationExampleTests.m */,
+				425D82941871CECA00E55BB9 /* Supporting Files */,
+			);
+			path = M3RegistrationExampleTests;
+			sourceTree = "<group>";
+		};
+		425D82941871CECA00E55BB9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				425D82951871CECA00E55BB9 /* M3RegistrationExampleTests-Info.plist */,
+				425D82961871CECA00E55BB9 /* InfoPlist.strings */,
+				425D829B1871CECA00E55BB9 /* M3RegistrationExampleTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		42DE1DE317DDFA4F0055EBC4 /* M3RegistrationManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,7 +230,7 @@
 				42DE1DE317DDFA4F0055EBC4 /* M3RegistrationManager */,
 				42FEB28417DDE86100B40B76 /* AFNetworking */,
 				42FEB24F17DDE84700B40B76 /* M3RegistrationExample */,
-				42FEB27317DDE84700B40B76 /* M3RegistrationExampleTests */,
+				425D82931871CECA00E55BB9 /* M3RegistrationExampleTests */,
 				42FEB24817DDE84700B40B76 /* Frameworks */,
 				42FEB24717DDE84700B40B76 /* Products */,
 			);
@@ -215,7 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				42FEB24617DDE84700B40B76 /* M3RegistrationExample.app */,
-				42FEB26C17DDE84700B40B76 /* M3RegistrationExampleTests.octest */,
+				425D828F1871CECA00E55BB9 /* M3RegistrationExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -223,6 +248,8 @@
 		42FEB24817DDE84700B40B76 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				425D82A11871CF3400E55BB9 /* FacebookSDK.framework */,
+				425D82891871CCF800E55BB9 /* XCTest.framework */,
 				42FEB24917DDE84700B40B76 /* UIKit.framework */,
 				42FEB24B17DDE84700B40B76 /* Foundation.framework */,
 				42FEB24D17DDE84700B40B76 /* CoreGraphics.framework */,
@@ -261,25 +288,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		42FEB27317DDE84700B40B76 /* M3RegistrationExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				42FEB27917DDE84700B40B76 /* M3RegistrationExampleTests.h */,
-				42FEB27A17DDE84700B40B76 /* M3RegistrationExampleTests.m */,
-				42FEB27417DDE84700B40B76 /* Supporting Files */,
-			);
-			path = M3RegistrationExampleTests;
-			sourceTree = "<group>";
-		};
-		42FEB27417DDE84700B40B76 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				42FEB27517DDE84700B40B76 /* M3RegistrationExampleTests-Info.plist */,
-				42FEB27617DDE84700B40B76 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		42FEB28417DDE86100B40B76 /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -310,6 +318,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		425D828E1871CECA00E55BB9 /* M3RegistrationExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 425D829E1871CECA00E55BB9 /* Build configuration list for PBXNativeTarget "M3RegistrationExampleTests" */;
+			buildPhases = (
+				425D828B1871CECA00E55BB9 /* Sources */,
+				425D828C1871CECA00E55BB9 /* Frameworks */,
+				425D828D1871CECA00E55BB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				425D829D1871CECA00E55BB9 /* PBXTargetDependency */,
+			);
+			name = M3RegistrationExampleTests;
+			productName = M3RegistrationExampleTests;
+			productReference = 425D828F1871CECA00E55BB9 /* M3RegistrationExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		42FEB24517DDE84700B40B76 /* M3RegistrationExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 42FEB27E17DDE84700B40B76 /* Build configuration list for PBXNativeTarget "M3RegistrationExample" */;
@@ -327,25 +353,6 @@
 			productReference = 42FEB24617DDE84700B40B76 /* M3RegistrationExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		42FEB26B17DDE84700B40B76 /* M3RegistrationExampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 42FEB28117DDE84700B40B76 /* Build configuration list for PBXNativeTarget "M3RegistrationExampleTests" */;
-			buildPhases = (
-				42FEB26717DDE84700B40B76 /* Sources */,
-				42FEB26817DDE84700B40B76 /* Frameworks */,
-				42FEB26917DDE84700B40B76 /* Resources */,
-				42FEB26A17DDE84700B40B76 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				42FEB27217DDE84700B40B76 /* PBXTargetDependency */,
-			);
-			name = M3RegistrationExampleTests;
-			productName = M3RegistrationExampleTests;
-			productReference = 42FEB26C17DDE84700B40B76 /* M3RegistrationExampleTests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -354,6 +361,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Rok Cresnik";
+				TargetAttributes = {
+					425D828E1871CECA00E55BB9 = {
+						TestTargetID = 42FEB24517DDE84700B40B76;
+					};
+				};
 			};
 			buildConfigurationList = 42FEB24117DDE84700B40B76 /* Build configuration list for PBXProject "M3RegistrationExample" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -368,12 +380,20 @@
 			projectRoot = "";
 			targets = (
 				42FEB24517DDE84700B40B76 /* M3RegistrationExample */,
-				42FEB26B17DDE84700B40B76 /* M3RegistrationExampleTests */,
+				425D828E1871CECA00E55BB9 /* M3RegistrationExampleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		425D828D1871CECA00E55BB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				425D82981871CECA00E55BB9 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		42FEB24417DDE84700B40B76 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -386,33 +406,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42FEB26917DDE84700B40B76 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				42FEB27817DDE84700B40B76 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		42FEB26A17DDE84700B40B76 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
+/* Begin PBXSourcesBuildPhase section */
+		425D828B1871CECA00E55BB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
+				425D829A1871CECA00E55BB9 /* M3RegistrationExampleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
-/* End PBXShellScriptBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
 		42FEB24217DDE84700B40B76 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -440,25 +444,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42FEB26717DDE84700B40B76 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				42FEB27B17DDE84700B40B76 /* M3RegistrationExampleTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		42FEB27217DDE84700B40B76 /* PBXTargetDependency */ = {
+		425D829D1871CECA00E55BB9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 42FEB24517DDE84700B40B76 /* M3RegistrationExample */;
-			targetProxy = 42FEB27117DDE84700B40B76 /* PBXContainerItemProxy */;
+			targetProxy = 425D829C1871CECA00E55BB9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		425D82961871CECA00E55BB9 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				425D82971871CECA00E55BB9 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		42FEB25217DDE84700B40B76 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -475,17 +479,72 @@
 			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
-		42FEB27617DDE84700B40B76 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				42FEB27717DDE84700B40B76 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		425D829F1871CECA00E55BB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/M3RegistrationExample.app/M3RegistrationExample";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/dark/Documents/dev/mice3/M3RegistrationManager/M3RegistrationManager,
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "M3RegistrationExampleTests/M3RegistrationExampleTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "M3RegistrationExampleTests/M3RegistrationExampleTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		425D82A01871CECA00E55BB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/M3RegistrationExample.app/M3RegistrationExample";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/dark/Documents/dev/mice3/M3RegistrationManager/M3RegistrationManager,
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "M3RegistrationExampleTests/M3RegistrationExampleTests-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "M3RegistrationExampleTests/M3RegistrationExampleTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		42FEB27C17DDE84700B40B76 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -574,43 +633,17 @@
 			};
 			name = Release;
 		};
-		42FEB28217DDE84700B40B76 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/M3RegistrationExample.app/M3RegistrationExample";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "M3RegistrationExample/M3RegistrationExample-Prefix.pch";
-				INFOPLIST_FILE = "M3RegistrationExampleTests/M3RegistrationExampleTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		42FEB28317DDE84700B40B76 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/M3RegistrationExample.app/M3RegistrationExample";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "M3RegistrationExample/M3RegistrationExample-Prefix.pch";
-				INFOPLIST_FILE = "M3RegistrationExampleTests/M3RegistrationExampleTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		425D829E1871CECA00E55BB9 /* Build configuration list for PBXNativeTarget "M3RegistrationExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				425D829F1871CECA00E55BB9 /* Debug */,
+				425D82A01871CECA00E55BB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		42FEB24117DDE84700B40B76 /* Build configuration list for PBXProject "M3RegistrationExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -625,15 +658,6 @@
 			buildConfigurations = (
 				42FEB27F17DDE84700B40B76 /* Debug */,
 				42FEB28017DDE84700B40B76 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		42FEB28117DDE84700B40B76 /* Build configuration list for PBXNativeTarget "M3RegistrationExampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				42FEB28217DDE84700B40B76 /* Debug */,
-				42FEB28317DDE84700B40B76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
