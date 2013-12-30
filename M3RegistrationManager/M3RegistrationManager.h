@@ -50,6 +50,7 @@
 
 +(NSDictionary *) getAuthenticationDictionary;
 -(void) setAuthenticationDictionary: (NSDictionary *) dic;
+-(void) removeAuthenticationDictionary;
 
 -(void) setUserId:(int) userDeviceId
     andSecureCode:(NSString *) secureCode;
@@ -59,7 +60,6 @@
          andIsActivated:(BOOL) isActivated;
 
 -(void)activateUserDevice;
-+(NSDictionary *) getAuthenticationDictionary;
 
 // connects the current account with facebook
 -(void)connectWithFacebook;
