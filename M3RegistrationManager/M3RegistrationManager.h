@@ -10,11 +10,13 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "M3RegistrationConstants.h"
 
+#define kAuthenticationTokenKey @"authenticationToken"
+
 @protocol M3RegistartionManagerDelegate <NSObject>
-- (void)onRegistrationSuccess:(id)responseData;
+- (void)onRegistrationSuccess:(NSDictionary *)responseData;
 @optional
 - (void)onRegistrationCancel;
-- (void)onRegistrationFailure:(id)error;
+- (void)onRegistrationFailure:(id)errorResponse;
 @end
 
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
@@ -30,11 +32,6 @@
 // register new user
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
--(void) registerDeviceWithEmail:(NSString *)email
-                    andPassword:(NSString *)password
-                reenterPassword:(NSString *)password2
-                   aggreToTerms:(BOOL)doesAgree;
-
 -(void) registerDeviceWithEmail:(NSString *)email;
 -(void) registerDeviceWithFacebook;
 -(void) registerDeviceWithTwitter;
@@ -47,23 +44,27 @@
 -(void) loginWithTwitter;
 
 // other methods
-- (void)resetPasswordForEmail:(NSString *)email;
 -(void) changeEmailTo:(NSString *)email;
 -(void)forgotPassword;
+
+
++(NSDictionary *) getAuthenticationDictionary;
+-(void) setAuthenticationDictionary: (NSDictionary *) dic;
+-(void) removeAuthenticationDictionary;
+
+-(void) setUserId:(int) userDeviceId
+    andSecureCode:(NSString *) secureCode;
+
 -(void) setUserDeviceId:(int) userDeviceId
           andSecureCode:(NSString *) secureCode
          andIsActivated:(BOOL) isActivated;
+
 -(void)activateUserDevice;
-+(NSDictionary *) getUserDevicePostParamsDictionary;
 
 // connects the current account with facebook
 -(void)connectWithFacebook;
 
 // twitter reverse auth method
 - (void)obtainAccessToAccountsWithBlock:(void (^)(BOOL))block;
-
-// Registration helper methods
-+ (BOOL)isEmailAddressValid:(NSString *)emailAddress;
-+ (BOOL)doPasswordsMatch:(NSString *)password and:(NSString *)password2;
 
 @end
