@@ -11,10 +11,10 @@
 #import "M3RegistrationConstants.h"
 
 @protocol M3RegistartionManagerDelegate <NSObject>
-- (void)onRegistrationSuccess:(NSDictionary *)responseData;
+- (void)onRegistrationSuccess:(id)responseData;
 @optional
 - (void)onRegistrationCancel;
-- (void)onRegistrationFailure:(NSString *)errorString;
+- (void)onRegistrationFailure:(id)error;
 @end
 
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
@@ -30,6 +30,11 @@
 // register new user
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
+-(void) registerDeviceWithEmail:(NSString *)email
+                    andPassword:(NSString *)password
+                reenterPassword:(NSString *)password2
+                   aggreToTerms:(BOOL)doesAgree;
+
 -(void) registerDeviceWithEmail:(NSString *)email;
 -(void) registerDeviceWithFacebook;
 -(void) registerDeviceWithTwitter;
@@ -42,6 +47,7 @@
 -(void) loginWithTwitter;
 
 // other methods
+- (void)resetPasswordForEmail:(NSString *)email;
 -(void) changeEmailTo:(NSString *)email;
 -(void)forgotPassword;
 -(void) setUserDeviceId:(int) userDeviceId
@@ -55,5 +61,9 @@
 
 // twitter reverse auth method
 - (void)obtainAccessToAccountsWithBlock:(void (^)(BOOL))block;
+
+// Registration helper methods
++ (BOOL)isEmailAddressValid:(NSString *)emailAddress;
++ (BOOL)doPasswordsMatch:(NSString *)password and:(NSString *)password2;
 
 @end
