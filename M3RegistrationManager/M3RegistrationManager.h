@@ -31,6 +31,10 @@
 
 // register new user
 -(void) registerDeviceWithEmail:(NSString *)email
+                    andPassword:(NSString *)password
+                reenterPassword:(NSString *)password2
+                   aggreToTerms:(BOOL)doesAgree;
+-(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
 -(void) registerDeviceWithEmail:(NSString *)email;
 -(void) registerDeviceWithFacebook;
@@ -44,6 +48,7 @@
 -(void) loginWithTwitter;
 
 // other methods
+- (void)resetPasswordForEmail:(NSString *)email;
 -(void) changeEmailTo:(NSString *)email;
 -(void)forgotPassword;
 
