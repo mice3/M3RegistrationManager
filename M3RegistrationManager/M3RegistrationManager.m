@@ -7,7 +7,7 @@
 //
 
 #import "M3RegistrationManager.h"
-#import "AFHTTPSessionManager.h"
+#import "AFHTTPRequestOperationManager.h"
 #import <Twitter/Twitter.h>
 #import "TWAPIManager.h"
 #import "Accounts/Accounts.h"
@@ -56,24 +56,28 @@
 
 -(void) loginWithParameters:(NSDictionary *)parameters
 {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] ini];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     [manager POST:kLogin
        parameters:parameters
-          success:^(NSURLSessionDataTask *task, id responseObject) {
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // How to get the status code?
-          NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-
-          NSError *error;
-          NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
-                                                               options: NSJSONReadingMutableContainers
-                                                                 error: &error];
-          
-          NSLog(@"%@", text);
+              NSDictionary *JSON;
+              NSError *error;
+              if ([responseObject isKindOfClass:[NSData class]]) {
+                  NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                  
+                  JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
+                                                         options: NSJSONReadingMutableContainers
+                                                           error: &error];
+              } else {
+                  JSON = responseObject;
+              }
           
           if (error) {
               if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                  [self.delegate onRegistrationFailure:text];
+                  [self.delegate onRegistrationFailure:JSON];
               }
           } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
               if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
@@ -87,9 +91,8 @@
                   [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
               }
           }
-
-          } failure:^(NSURLSessionDataTask *task, NSError *error) {
               
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
                   [self.delegate onRegistrationFailure:[error description]];
               }
@@ -98,22 +101,27 @@
 
 -(void) registerDeviceWithParameters:(NSDictionary *)parameters
 {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     [manager POST:kRegister
        parameters:parameters
-          success:^(NSURLSessionDataTask *task, id responseObject) {
-              NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-              
-              NSLog(@"%@", text);
-              
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSDictionary *JSON;
               NSError *error;
-              NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
-                                                                   options: NSJSONReadingMutableContainers
-                                                                     error: &error];
+              if ([responseObject isKindOfClass:[NSData class]]) {
+                  NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                  
+                  JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
+                                                         options: NSJSONReadingMutableContainers
+                                                           error: &error];
+              } else {
+                  JSON = responseObject;
+              }
+              
               if (error) {
                   if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                      [self.delegate onRegistrationFailure:text];
+                      [self.delegate onRegistrationFailure:JSON];
                   }
               } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
                   if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
@@ -129,12 +137,12 @@
                   }
               } else {
                   if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                      [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
+                      [self.delegate onRegistrationFailure:JSON];
                   }
               }
 
-          
-      } failure:^(NSURLSessionDataTask *task, NSError *error) {
+              
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
           if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
               [self.delegate onRegistrationFailure:[error description]];
           }
