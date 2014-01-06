@@ -7,7 +7,7 @@
 //
 
 #import "M3RegistrationManager.h"
-#import "AFHTTPSessionManager.h"
+#import "AFHTTPRequestOperationManager.h"
 #import <Twitter/Twitter.h>
 #import "TWAPIManager.h"
 #import "Accounts/Accounts.h"
@@ -56,72 +56,30 @@
 
 -(void) loginWithParameters:(NSDictionary *)parameters
 {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] ini];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager POST:kLogin
        parameters:parameters
-          success:^(NSURLSessionDataTask *task, id responseObject) {
-        // How to get the status code?
-          NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-
-          NSError *error;
-          NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
-                                                               options: NSJSONReadingMutableContainers
-                                                                 error: &error];
-          
-          NSLog(@"%@", text);
-          
-          if (error) {
-              if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                  [self.delegate onRegistrationFailure:text];
-              }
-          } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
-              if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-                  
-                  [self onAuthenticationSuccess:JSON];
-                  
-                  [self.delegate onRegistrationSuccess:JSON];
-              }
-          } else {
-              if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                  [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
-              }
-          }
-
-          } failure:^(NSURLSessionDataTask *task, NSError *error) {
-              
-              if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                  [self.delegate onRegistrationFailure:[error description]];
-              }
-    }];
-}
-
--(void) registerDeviceWithParameters:(NSDictionary *)parameters
-{
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
-    
-    [manager POST:kRegister
-       parameters:parameters
-          success:^(NSURLSessionDataTask *task, id responseObject) {
-              NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-              
-              NSLog(@"%@", text);
-              
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSDictionary *JSON;
               NSError *error;
-              NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
-                                                                   options: NSJSONReadingMutableContainers
-                                                                     error: &error];
+              if ([responseObject isKindOfClass:[NSData class]]) {
+                  NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                  
+                  JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
+                                                                       options: NSJSONReadingMutableContainers
+                                                                         error: &error];
+              } else {
+                  JSON = responseObject;
+              }
+              
               if (error) {
                   if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                      [self.delegate onRegistrationFailure:text];
+                      [self.delegate onRegistrationFailure:JSON];
                   }
-              } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
+              } else if( [[JSON valueForKey:@"hasError"] intValue] == 0
+                        && [[JSON valueForKey:@"result"] intValue] == 1) {
                   if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-//                      if ([[parameters objectForKey:@"registrationType"] isEqualToString:@"facebook"]) {
-//                          [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFacebookConnected];
-//                      }
-                      
-                      NSLog(@"authenticationToken; %@", [JSON objectForKey:kAuthenticationTokenKey]);
                       
                       [self onAuthenticationSuccess:JSON];
                       
@@ -132,13 +90,60 @@
                       [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
                   }
               }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+            [self.delegate onRegistrationFailure:[error description]];
+        }
+    }];
 
-          
-      } failure:^(NSURLSessionDataTask *task, NSError *error) {
-          if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-              [self.delegate onRegistrationFailure:[error description]];
-          }
-      }];
+}
+
+-(void) registerDeviceWithParameters:(NSDictionary *)parameters
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager POST:kRegister parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *JSON;
+        NSError *error;
+        if ([responseObject isKindOfClass:[NSData class]]) {
+            NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+            
+            JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
+                                                   options: NSJSONReadingMutableContainers
+                                                     error: &error];
+        } else {
+            JSON = responseObject;
+        }
+        
+        if (error) {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                [self.delegate onRegistrationFailure:JSON];
+            }
+        } else if([[JSON valueForKey:@"hasError"] intValue] == 0
+                  && [[JSON valueForKey:@"result"] intValue] == 1) {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
+                
+                NSLog(@"authenticationToken; %@", [JSON objectForKey:kAuthenticationTokenKey]);
+                
+                [self onAuthenticationSuccess:JSON];
+                
+                [self.delegate onRegistrationSuccess:JSON];
+            }
+        } else {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        
+        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+            [self.delegate onRegistrationFailure:[error description]];
+        }
+        
+    }];
+    
+
 }
 
 #pragma mark - Email registration
