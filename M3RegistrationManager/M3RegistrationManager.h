@@ -48,14 +48,17 @@
 -(void) loginWithTwitter;
 
 // other methods
+- (void)changePassword:(NSString *)oldPassword
+           newPassword:(NSString *)password
+        repeatPassword:(NSString *)password2;
 - (void)resetPasswordForEmail:(NSString *)email;
 -(void) changeEmailTo:(NSString *)email;
 -(void)forgotPassword;
 
 
-+(NSDictionary *) getAuthenticationDictionary;
--(void) setAuthenticationDictionary: (NSDictionary *) dic;
--(void) removeAuthenticationDictionary;
++ (NSDictionary *) getAuthenticationDictionary;
++ (void) setAuthenticationDictionary: (NSDictionary *) dic;
++ (void) removeAuthenticationDictionary;
 
 -(void) setUserId:(int) userDeviceId
     andSecureCode:(NSString *) secureCode;
