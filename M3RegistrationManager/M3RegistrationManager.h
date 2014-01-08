@@ -52,25 +52,25 @@
            newPassword:(NSString *)password
         repeatPassword:(NSString *)password2;
 - (void)resetPasswordForEmail:(NSString *)email;
--(void) changeEmailTo:(NSString *)email;
--(void)forgotPassword;
+- (void)changeEmailTo:(NSString *)email;
+- (void)forgotPassword;
 
 
 + (NSDictionary *) getAuthenticationDictionary;
 + (void) setAuthenticationDictionary: (NSDictionary *) dic;
 + (void) removeAuthenticationDictionary;
 
--(void) setUserId:(int) userDeviceId
+- (void)setUserId:(int) userDeviceId
     andSecureCode:(NSString *) secureCode;
 
--(void) setUserDeviceId:(int) userDeviceId
+- (void)setUserDeviceId:(int) userDeviceId
           andSecureCode:(NSString *) secureCode
          andIsActivated:(BOOL) isActivated;
 
--(void)activateUserDevice;
+- (void)activateUserDevice;
 
 // connects the current account with facebook
--(void)connectWithFacebook;
+- (void)connectWithFacebook;
 
 // twitter reverse auth method
 - (void)obtainAccessToAccountsWithBlock:(void (^)(BOOL))block;

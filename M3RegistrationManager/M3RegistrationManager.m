@@ -219,6 +219,19 @@
     [self callServerScript:kLogin withPOSTParameters:params];
 }
 
+- (void)resetPasswordForEmail:(NSString *)email
+{
+    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
+    if (!params) {
+        params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    }
+    [params setValue:email forKey:@"email"];
+    
+    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
+    
+    [self callServerScript:kResetPassword withPOSTParameters:params];
+    
+}
 //-(void)forgotPassword
 //{
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
