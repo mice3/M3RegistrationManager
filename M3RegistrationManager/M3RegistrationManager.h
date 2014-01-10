@@ -27,6 +27,7 @@
  viewController is the view where registration happens (we need it so that the touches can be disabled while the
  procedure takes place
 */
+- (id)initWithDelegate:(id<M3RegistartionManagerDelegate>)delegate;
 -(id)initWithViewController:(UIViewController *)viewController;
 
 // register new user

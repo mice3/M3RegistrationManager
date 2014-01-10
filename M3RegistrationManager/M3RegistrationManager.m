@@ -28,6 +28,15 @@
 
 @implementation M3RegistrationManager
 
+
+- (id)initWithDelegate:(id<M3RegistartionManagerDelegate>)delegate
+{
+    if (self = [super init]) {
+        self.delegate = delegate;
+    }
+    return self;
+}
+
 - (id)initWithViewController:(UIViewController *)viewController
 {
     if (self = [super init]) {
@@ -139,7 +148,7 @@
                 [self.delegate onRegistrationFailure:JSON];
             }
         } else if([[JSON valueForKey:@"hasError"] intValue] == 0
-                  && [[JSON valueForKey:@"result"] intValue] == 1) {
+                  || [[JSON valueForKey:@"result"] intValue] == 1) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
                 
                 NSLog(@"authenticationToken; %@", [JSON objectForKey:kAuthenticationTokenKey]);
