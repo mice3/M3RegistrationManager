@@ -60,7 +60,7 @@
 
 - (void)onAuthenticationSuccess: (NSDictionary *) json
 {
-    [M3RegistrationManager setAuthenticationDictionary:[json objectForKey:kAuthenticationTokenKey]]; // TODO: this
+    [M3RegistrationManager setAuthenticationDictionary:[json objectForKey:kParameterAuthToken]]; // TODO: this
 }
 
 #pragma mark - Email registration
@@ -69,12 +69,12 @@
                 reenterPassword:(NSString *)password2
                    aggreToTerms:(BOOL)doesAgree
 {
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:4];
-    [params setValue:email forKey:@"email"];
-    [params setValue:password forKey:@"password"];
-    [params setValue:password2 forKey:@"password_reentered"];
+    NSMutableDictionary *params = [@{kParameterEmail : email,
+                                     kParameterPassword : password,
+                                     kParameterPassword2 : password2}
+                                   mutableCopy];
     if (doesAgree) {
-        [params setValue:@"Y" forKey:@"register_agree"];
+        [params setValue:@"Y" forKey:kParameterTearmsAgree];
     }
 
     [self callServerScript:kRegister withPOSTParameters:params];
@@ -82,14 +82,7 @@
 
 - (void)registerDeviceWithEmail:(NSString *)email
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
-    if (!params) {
-        params = [[NSMutableDictionary alloc] initWithCapacity:3];
-    }
-    
-    [params setValue:email forKey:@"email"];
-    
-    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
+    NSDictionary *params = @{kParameterEmail : email};
 
     [self callServerScript:kRegister withPOSTParameters:params];
 }
@@ -97,15 +90,8 @@
 - (void)registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
-    if (!params) {
-        params = [[NSMutableDictionary alloc] initWithCapacity:3];
-    }
-    
-    [params setValue:email forKey:@"email"];
-    [params setValue:password forKey:@"password"];
-    
-    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
+    NSDictionary *params = @{kParameterEmail : email,
+                             kParameterPassword : password};
     
     [self callServerScript:kRegister withPOSTParameters:params];
 }
@@ -128,9 +114,12 @@
 
 - (void)callServerScript:(NSString *)serverScript withPOSTParameters:(NSDictionary *)parameters
 {
+    // Enacapsulate the parameters in a user dict (REST architecture purposes)
+    NSDictionary *postParameters =  @{kParameterUser : parameters};
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    [manager POST:serverScript parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:serverScript parameters:postParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *JSON;
         NSError *error;
         if ([responseObject isKindOfClass:[NSData class]]) {
@@ -151,7 +140,7 @@
                   || [[JSON valueForKey:@"result"] intValue] == 1) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
                 
-                NSLog(@"authenticationToken; %@", [JSON objectForKey:kAuthenticationTokenKey]);
+                NSLog(@"authenticationToken; %@", [JSON objectForKey:kParameterAccessToken]);
                 
                 [self onAuthenticationSuccess:JSON];
                 
@@ -180,50 +169,14 @@
 //    }
 //    
 //    [params setValue:email forKey:@"email"];
-//    
-//    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:
-//                            [NSURL URLWithString:kServerURL]];
-//    
-//    [client postPath:kServerChangeEmail parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        
-//        NSError *error;
-//        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
-//                                                             options: NSJSONReadingMutableContainers
-//                                                               error: &error];
-//        if (error) {
-//            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-//                [self.delegate onRegistrationFailure:text];
-//            }
-//        } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
-//            if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-//                [self.delegate onRegistrationSuccess:JSON];
-//            }
-//        } else {
-//            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-//                [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
-//            }
-//        }
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-//            [self.delegate onRegistrationFailure:[error description]];
-//        }
-//        
-//    }];
-//    
+//    // call server script
 //}
 
 - (void)loginWithEmail:(NSString *)email
            andPassword:(NSString *)password
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
-    if (!params) {
-        params = [[NSMutableDictionary alloc] initWithCapacity:3];
-    }
-    [params setValue:email forKey:@"email"];
-    [params setValue:password forKey:@"password"];
-    
-    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
+    NSDictionary *params = @{kParameterEmail : email,
+                             kParameterPassword : password};
     
     [self callServerScript:kLogin withPOSTParameters:params];
 }
@@ -234,9 +187,7 @@
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
-    [params setValue:email forKey:@"email"];
-    
-    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
+    [params setValue:email forKey:kParameterEmail];
     
     [self callServerScript:kResetPassword withPOSTParameters:params];
     
@@ -251,34 +202,7 @@
 //    if (!params) {
 //        params = [[NSMutableDictionary alloc] initWithCapacity:3];
 //    }
-//    
-//    [client postPath:kServerForgotPassword parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSError *error;
-//        
-//        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
-//                                                             options: NSJSONReadingMutableContainers
-//                                                               error: &error];
-//        
-//        if (error) {
-//            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-//                [self.delegate onRegistrationFailure:text];
-//            }
-//        } else if( [[JSON valueForKey:@"hasError"] intValue] == 0) {
-//            if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-//                [self.delegate onRegistrationSuccess:JSON];
-//            }
-//        } else {
-//            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-//                [self.delegate onRegistrationFailure:[JSON valueForKey:@"errorMessage"]];
-//            }
-//        }
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-//            [self.delegate onRegistrationFailure:[error description]];
-//        }
-//        
-//    }];
+//    // call 
 //}
 
 
@@ -405,11 +329,10 @@
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
     
-    [params setValue:@"facebook" forKey:@"registrationType"];
-    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
-    [params setValue:accessToken forKey:@"accessToken"];
+    [params setValue:@"facebook" forKey:kParameterProvider];
+    [params setValue:accessToken forKey:kParameterAccessToken];
     
-    [self callServerScript:kRegister withPOSTParameters:params];
+    [self callServerScript:kLogin withPOSTParameters:params];
 }
 
 - (void)loginWithFacebook
@@ -453,9 +376,8 @@
     if (!params) {
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
-    [params setValue:@"twitter" forKey:@"registrationType"];
-    [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
-    [params setValue:accessToken forKey:@"accessToken"];
+    [params setValue:@"twitter" forKey:kParameterProvider];
+    [params setValue:accessToken forKey:kParameterAccessToken];
     
     [self callServerScript:kRegister withPOSTParameters:params];
 }
@@ -536,17 +458,17 @@
 #pragma mark get / set post parameters
 + (NSDictionary *)getAuthenticationDictionary
 {
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:kAuthenticationTokenKey];
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:kParameterAuthToken];
 }
 
 + (void)setAuthenticationDictionary:(NSDictionary *)dic
 {
-    [[NSUserDefaults standardUserDefaults] setValue:dic forKey:kAuthenticationTokenKey];
+    [[NSUserDefaults standardUserDefaults] setValue:dic forKey:kParameterAuthToken];
 }
 
 + (void)removeAuthenticationDictionary
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAuthenticationTokenKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kParameterAuthToken];
 }
 
 @end

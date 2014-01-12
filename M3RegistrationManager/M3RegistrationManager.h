@@ -10,8 +10,6 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "M3RegistrationConstants.h"
 
-#define kAuthenticationTokenKey @"authenticationToken"
-
 @protocol M3RegistartionManagerDelegate <NSObject>
 - (void)onRegistrationSuccess:(NSDictionary *)responseData;
 @optional
@@ -28,18 +26,18 @@
  procedure takes place
 */
 - (id)initWithDelegate:(id<M3RegistartionManagerDelegate>)delegate;
--(id)initWithViewController:(UIViewController *)viewController;
+- (id)initWithViewController:(UIViewController *)viewController;
 
 // register new user
--(void) registerDeviceWithEmail:(NSString *)email
+- (void)registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password
                 reenterPassword:(NSString *)password2
                    aggreToTerms:(BOOL)doesAgree;
--(void) registerDeviceWithEmail:(NSString *)email
+- (void)registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
--(void) registerDeviceWithEmail:(NSString *)email;
--(void) registerDeviceWithFacebook;
--(void) registerDeviceWithTwitter;
+- (void)registerDeviceWithEmail:(NSString *)email;
+- (void)registerDeviceWithFacebook;
+- (void)registerDeviceWithTwitter;
 
 // login an existing user
 -(void) loginWithEmail:(NSString *)email
