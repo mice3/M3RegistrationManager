@@ -382,19 +382,15 @@
         [self.apiManager performReverseAuthForAccount:self.accounts[buttonIndex]
                                           withHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                                               [[NSNotificationCenter defaultCenter] removeObserver:self];
-                                              if (responseData) {
-                                                  NSString *accessToken = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                                                  
-                                                  NSLog(@"Reverse Auth process returned: %@", accessToken);
-                                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                                      [self registerDeviceWithTwitterAccessToken:accessToken];
-                                                  });
-                                              }
-                                              else {
+                                              if (error) {
                                                   if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
                                                       [self.delegate onRegistrationFailure:[error localizedDescription]];
                                                   }
-                                                  NSLog(@"Reverse Auth process failed. Error returned was: %@\n", [error localizedDescription]);
+                                              } else {
+                                                  NSString *accessToken = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                      [self registerDeviceWithTwitterAccessToken:accessToken];
+                                                  });
                                               }
                                           }];
     } else {
@@ -433,7 +429,12 @@
 #pragma mark get / set post parameters
 + (NSDictionary *)getAuthenticationDictionary
 {
-    return @{kParameterAuthToken : [[NSUserDefaults standardUserDefaults] dictionaryForKey:kParameterAuthToken]};
+    NSDictionary *authDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kParameterAuthToken];
+    if (authDict) {
+        return @{kParameterAuthToken : authDict};
+    }
+    
+    return nil;
 }
 
 + (void)setAuthenticationDictionary:(NSDictionary *)dic

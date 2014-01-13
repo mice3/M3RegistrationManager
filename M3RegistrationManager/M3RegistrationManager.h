@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FacebookSDK/FacebookSDK.h>
+#import <FacebookSDK/Facebook.h>
 #import "M3ServerConstants.h"
 
 @protocol M3RegistartionManagerDelegate <NSObject>
