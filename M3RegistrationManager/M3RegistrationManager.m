@@ -120,36 +120,11 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager POST:serverScript parameters:postParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *JSON;
-        NSError *error;
-        if ([responseObject isKindOfClass:[NSData class]]) {
-            NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-            
-            JSON = [NSJSONSerialization JSONObjectWithData: [text dataUsingEncoding:NSUTF8StringEncoding]
-                                                   options: NSJSONReadingMutableContainers
-                                                     error: &error];
-        } else {
-            JSON = responseObject;
-        }
+        NSDictionary *JSON = responseObject;
         
-        if (error) {
-            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                [self.delegate onRegistrationFailure:JSON];
-            }
-        } else if([[JSON valueForKey:@"hasError"] intValue] == 0
-                  || [[JSON valueForKey:@"result"] intValue] == 1) {
-            if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-                
-                NSLog(@"authenticationToken; %@", [JSON objectForKey:kParameterAccessToken]);
-                
-                [self onAuthenticationSuccess:JSON];
-                
-                [self.delegate onRegistrationSuccess:JSON];
-            }
-        } else {
-            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                [self.delegate onRegistrationFailure:JSON];
-            }
+        [self onAuthenticationSuccess:JSON];
+        if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
+            [self.delegate onRegistrationSuccess:JSON];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
