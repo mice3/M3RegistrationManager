@@ -332,7 +332,7 @@
     [params setValue:@"facebook" forKey:kParameterProvider];
     [params setValue:accessToken forKey:kParameterAccessToken];
     
-    [self callServerScript:kLogin withPOSTParameters:params];
+    [self callServerScript:kRegister withPOSTParameters:params];
 }
 
 - (void)loginWithFacebook
