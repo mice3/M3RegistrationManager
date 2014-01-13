@@ -26,7 +26,7 @@
 
 #import "OAuthCore.h"
 #import "TWSignedRequest.h"
-#import "M3RegistrationConstants.h"
+#import "M3ServerConstants.h"
 
 #define TW_HTTP_METHOD_GET @"GET"
 #define TW_HTTP_METHOD_POST @"POST"

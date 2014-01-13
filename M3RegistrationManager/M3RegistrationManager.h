@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <FacebookSDK/FacebookSDK.h>
-#import "M3RegistrationConstants.h"
+#import "M3ServerConstants.h"
 
 @protocol M3RegistartionManagerDelegate <NSObject>
 - (void)onRegistrationSuccess:(NSDictionary *)responseData;

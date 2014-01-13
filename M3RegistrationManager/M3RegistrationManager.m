@@ -77,14 +77,14 @@
         [params setValue:@"Y" forKey:kParameterTearmsAgree];
     }
 
-    [self callServerScript:kRegister withPOSTParameters:params];
+    [self callServerScript:kServerRegister withPOSTParameters:params];
 }
 
 - (void)registerDeviceWithEmail:(NSString *)email
 {
     NSDictionary *params = @{kParameterEmail : email};
 
-    [self callServerScript:kRegister withPOSTParameters:params];
+    [self callServerScript:kServerRegister withPOSTParameters:params];
 }
 
 - (void)registerDeviceWithEmail:(NSString *)email
@@ -93,7 +93,7 @@
     NSDictionary *params = @{kParameterEmail : email,
                              kParameterPassword : password};
     
-    [self callServerScript:kRegister withPOSTParameters:params];
+    [self callServerScript:kServerRegister withPOSTParameters:params];
 }
 
 - (void)changePassword:(NSString *)oldPassword
@@ -109,7 +109,7 @@
     [params setValue:password forKey:@"new_password"];
     [params setValue:password2 forKey:@"new_password_repeat"];
     
-    [self callServerScript:kChangePassword withPOSTParameters:params];
+    [self callServerScript:kServerChangePassword withPOSTParameters:params];
 }
 
 - (void)callServerScript:(NSString *)serverScript withPOSTParameters:(NSDictionary *)parameters
@@ -153,7 +153,7 @@
     NSDictionary *params = @{kParameterEmail : email,
                              kParameterPassword : password};
     
-    [self callServerScript:kLogin withPOSTParameters:params];
+    [self callServerScript:kServerLogin withPOSTParameters:params];
 }
 
 - (void)resetPasswordForEmail:(NSString *)email
@@ -164,7 +164,7 @@
     }
     [params setValue:email forKey:kParameterEmail];
     
-    [self callServerScript:kResetPassword withPOSTParameters:params];
+    [self callServerScript:kServerResetPassword withPOSTParameters:params];
     
 }
 //-(void)forgotPassword
@@ -307,7 +307,7 @@
     [params setValue:@"facebook" forKey:kParameterProvider];
     [params setValue:accessToken forKey:kParameterAccessToken];
     
-    [self callServerScript:kRegister withPOSTParameters:params];
+    [self callServerScript:kServerRegister withPOSTParameters:params];
 }
 
 - (void)loginWithFacebook
@@ -354,7 +354,7 @@
     [params setValue:@"twitter" forKey:kParameterProvider];
     [params setValue:accessToken forKey:kParameterAccessToken];
     
-    [self callServerScript:kRegister withPOSTParameters:params];
+    [self callServerScript:kServerRegister withPOSTParameters:params];
 }
 
 - (void)performReverseAuth:(id)sender
@@ -433,7 +433,7 @@
 #pragma mark get / set post parameters
 + (NSDictionary *)getAuthenticationDictionary
 {
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:kParameterAuthToken];
+    return @{kParameterAuthToken : [[NSUserDefaults standardUserDefaults] dictionaryForKey:kParameterAuthToken]};
 }
 
 + (void)setAuthenticationDictionary:(NSDictionary *)dic
