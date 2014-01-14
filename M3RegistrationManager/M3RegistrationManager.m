@@ -120,17 +120,19 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager POST:serverScript parameters:postParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *JSON = responseObject;
-        
-        [self onAuthenticationSuccess:JSON];
-        if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-            [self.delegate onRegistrationSuccess:JSON];
+        if (![[responseObject objectForKey:kParameterStatus] intValue]) {
+            if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
+                [self.delegate onRegistrationFailure:[responseObject objectForKey:kParameterError]];
+            }
+        } else {
+            [self onAuthenticationSuccess:responseObject];
+            if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
+                [self.delegate onRegistrationSuccess:responseObject];
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        
         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-            [self.delegate onRegistrationFailure:error];
+            [self.delegate onRegistrationFailure:[error localizedDescription]];
         }
         
     }];
