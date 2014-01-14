@@ -11,7 +11,7 @@
 #import "M3ServerConstants.h"
 
 @protocol M3RegistartionManagerDelegate <NSObject>
-- (void)onRegistrationSuccess:(NSDictionary *)responseData;
+- (void)onRegistrationSuccess:(id)responseData;
 @optional
 - (void)onRegistrationCancel;
 - (void)onRegistrationFailure:(id)errorResponse;
@@ -36,15 +36,13 @@
 - (void)registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
 - (void)registerDeviceWithEmail:(NSString *)email;
+// twitter and facebook user the same method for login/register
 - (void)registerDeviceWithFacebook;
 - (void)registerDeviceWithTwitter;
 
 // login an existing user
--(void) loginWithEmail:(NSString *)email
+- (void)loginWithEmail:(NSString *)email
            andPassword:(NSString *)password;
-// TODO: separate login and register methods for Twitter & Facebook
--(void) loginWithFacebook;
--(void) loginWithTwitter;
 
 // other methods
 - (void)changePassword:(NSString *)oldPassword
@@ -54,10 +52,10 @@
 - (void)changeEmailTo:(NSString *)email;
 - (void)forgotPassword;
 
-
-+ (NSDictionary *) getAuthenticationDictionary;
-+ (void) setAuthenticationDictionary: (NSDictionary *) dic;
-+ (void) removeAuthenticationDictionary;
+// Authentication Dictionary methods
++ (NSDictionary *)getAuthenticationDictionary;
++ (void)setAuthenticationDictionary: (NSDictionary *) dic;
++ (void)removeAuthenticationDictionary;
 
 - (void)setUserId:(int) userDeviceId
     andSecureCode:(NSString *) secureCode;

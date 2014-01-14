@@ -60,7 +60,9 @@
 
 - (void)onAuthenticationSuccess: (NSDictionary *) json
 {
-    [M3RegistrationManager setAuthenticationDictionary:[json objectForKey:kParameterAuthToken]]; // TODO: this
+    if ([json objectForKey:kParameterAuthToken]) {
+        [M3RegistrationManager setAuthenticationDictionary:[json objectForKey:kParameterAuthToken]];
+    }
 }
 
 #pragma mark - Email registration
@@ -105,9 +107,9 @@
         params = [[NSMutableDictionary alloc] initWithCapacity:3];
     }
     
-    [params setValue:oldPassword forKey:@"old_password"];
-    [params setValue:password forKey:@"new_password"];
-    [params setValue:password2 forKey:@"new_password_repeat"];
+    [params setValue:oldPassword forKey:kParameterOldPass];
+    [params setValue:password forKey:kParameterNewPass];
+    [params setValue:password2 forKey:kParameterNewPass2];
     
     [self callServerScript:kServerChangePassword withPOSTParameters:params];
 }
@@ -115,24 +117,18 @@
 - (void)callServerScript:(NSString *)serverScript withPOSTParameters:(NSDictionary *)parameters
 {
     // Enacapsulate the parameters in a user dict (REST architecture purposes)
-    NSDictionary *postParameters =  @{kParameterUser : parameters};
+//    NSDictionary *postParameters =  @{kParameterUser : parameters};
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    [manager POST:serverScript parameters:postParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *JSON = responseObject;
-        
-        [self onAuthenticationSuccess:JSON];
+    [manager POST:serverScript parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self onAuthenticationSuccess:responseObject];
         if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-            [self.delegate onRegistrationSuccess:JSON];
+            [self.delegate onRegistrationSuccess:responseObject];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        
         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
             [self.delegate onRegistrationFailure:error];
         }
-        
     }];
 }
 
@@ -190,7 +186,6 @@
 {
     if (FBSession.activeSession.state == FBSessionStateOpen
         || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
-        
         [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession.accessTokenData accessToken]];
     } else {
         // Open a session showing the user the login UI
@@ -222,8 +217,6 @@
     // If the session was opened successfully
     if (!error && state == FBSessionStateOpen){
         NSLog(@"Session opened");
-        // Show the user the logged-in UI
-        //        [self userLoggedIn];
         [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession.accessTokenData accessToken]];
         return;
     }
@@ -283,8 +276,6 @@
     switch (state) {
         case FBSessionStateOpen:
             if (!error) {
-                // We have a valid session
-                NSLog(@"User session found");
                 [self registerDeviceWithFacebookAccessToken:[FBSession.activeSession.accessTokenData accessToken]];
             }
             break;
@@ -299,15 +290,14 @@
 
 - (void)registerDeviceWithFacebookAccessToken:(NSString *)accessToken
 {
-    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
-    if (!params) {
-        params = [[NSMutableDictionary alloc] initWithCapacity:3];
-    }
+//    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
+//    if (!params) {
+//        params = [[NSMutableDictionary alloc] initWithCapacity:3];
+//    }
+    NSDictionary *params = @{kParameterProvider: @"facebook",
+                             kParameterAccessToken: accessToken};
     
-    [params setValue:@"facebook" forKey:kParameterProvider];
-    [params setValue:accessToken forKey:kParameterAccessToken];
-    
-    [self callServerScript:kServerRegister withPOSTParameters:params];
+    [self callServerScript:kServerFBLogin withPOSTParameters:params];
 }
 
 - (void)loginWithFacebook
@@ -429,7 +419,7 @@
 #pragma mark get / set post parameters
 + (NSDictionary *)getAuthenticationDictionary
 {
-    NSDictionary *authDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kParameterAuthToken];
+    NSDictionary *authDict = [[NSUserDefaults standardUserDefaults] objectForKey:kParameterAuthToken];
     if (authDict) {
         return @{kParameterAuthToken : authDict};
     }
@@ -439,7 +429,7 @@
 
 + (void)setAuthenticationDictionary:(NSDictionary *)dic
 {
-    [[NSUserDefaults standardUserDefaults] setValue:dic forKey:kParameterAuthToken];
+    [[NSUserDefaults standardUserDefaults] setObject:dic forKey:kParameterAuthToken];
 }
 
 + (void)removeAuthenticationDictionary
