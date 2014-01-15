@@ -277,9 +277,6 @@
         }
     }
     
-    
-    
-    
     switch (state) {
         case FBSessionStateOpen:
             if (!error) {
@@ -297,12 +294,12 @@
 
 - (void)registerDeviceWithFacebookAccessToken:(NSString *)accessToken
 {
-//    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
-//    if (!params) {
-//        params = [[NSMutableDictionary alloc] initWithCapacity:3];
-//    }
-    NSDictionary *params = @{kParameterProvider: @"facebook",
-                             kParameterAccessToken: accessToken};
+    NSMutableDictionary *params = [[M3RegistrationManager getAuthenticationDictionary] mutableCopy];
+    if (!params) {
+        params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    }
+    [params setObject:@"facebook" forKey:kParameterProvider];
+    [params setObject:accessToken forKey:kParameterAccessToken];
     
     [self callServerScript:kServerFBLogin withPOSTParameters:params];
 }
