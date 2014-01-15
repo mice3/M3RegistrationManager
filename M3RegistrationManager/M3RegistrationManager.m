@@ -124,7 +124,7 @@
     [manager POST:serverScript parameters:postParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (![[responseObject objectForKey:kParameterStatus] intValue]) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
-                [self.delegate onRegistrationFailure:[responseObject objectForKey:kParameterError]];
+                [self.delegate onRegistrationFailure:[responseObject objectForKey:kParameterErrorDescription]];
             }
         } else {
             [self onAuthenticationSuccess:responseObject];
