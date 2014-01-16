@@ -116,12 +116,14 @@
 
 - (void)callServerScript:(NSString *)serverScript withPOSTParameters:(NSDictionary *)parameters
 {
+#if kEncapsulateAuthParams
     // Enacapsulate the parameters in a user dict (REST architecture purposes)
     NSDictionary *postParameters =  @{kParameterUser : parameters};
+#endif
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    [manager POST:serverScript parameters:postParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:serverScript parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (![[responseObject objectForKey:kParameterStatus] intValue]) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
                 [self.delegate onRegistrationFailure:[responseObject objectForKey:kParameterErrorDescription]];
