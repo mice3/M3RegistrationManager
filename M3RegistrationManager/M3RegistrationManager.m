@@ -128,11 +128,9 @@
             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
                 [self.delegate onRegistrationFailure:[responseObject objectForKey:kParameterErrorDescription]];
             }
-        } else {
+        } else if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
             [self onAuthenticationSuccess:responseObject];
-            if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
-                [self.delegate onRegistrationSuccess:responseObject];
-            }
+            [self.delegate onRegistrationSuccess:responseObject];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
