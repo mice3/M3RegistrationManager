@@ -7,13 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FacebookSDK/FacebookSDK.h>
-#import "M3RegistrationConstants.h"
-
-#define kAuthenticationTokenKey @"authenticationToken"
+#import <FacebookSDK/Facebook.h>
+#import "M3ServerConstants.h"
 
 @protocol M3RegistartionManagerDelegate <NSObject>
-- (void)onRegistrationSuccess:(NSDictionary *)responseData;
+- (void)onRegistrationSuccess:(id)responseData;
 @optional
 - (void)onRegistrationCancel;
 - (void)onRegistrationFailure:(id)errorResponse;
@@ -28,25 +26,23 @@
  procedure takes place
 */
 - (id)initWithDelegate:(id<M3RegistartionManagerDelegate>)delegate;
--(id)initWithViewController:(UIViewController *)viewController;
+- (id)initWithViewController:(UIViewController *)viewController;
 
 // register new user
--(void) registerDeviceWithEmail:(NSString *)email
+- (void)registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password
                 reenterPassword:(NSString *)password2
                    aggreToTerms:(BOOL)doesAgree;
--(void) registerDeviceWithEmail:(NSString *)email
+- (void)registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
--(void) registerDeviceWithEmail:(NSString *)email;
--(void) registerDeviceWithFacebook;
--(void) registerDeviceWithTwitter;
+- (void)registerDeviceWithEmail:(NSString *)email;
+// twitter and facebook user the same method for login/register
+- (void)registerDeviceWithFacebook;
+- (void)registerDeviceWithTwitter;
 
 // login an existing user
--(void) loginWithEmail:(NSString *)email
+- (void)loginWithEmail:(NSString *)email
            andPassword:(NSString *)password;
-// TODO: separate login and register methods for Twitter & Facebook
--(void) loginWithFacebook;
--(void) loginWithTwitter;
 
 // other methods
 - (void)changePassword:(NSString *)oldPassword
@@ -56,10 +52,10 @@
 - (void)changeEmailTo:(NSString *)email;
 - (void)forgotPassword;
 
-
-+ (NSDictionary *) getAuthenticationDictionary;
-+ (void) setAuthenticationDictionary: (NSDictionary *) dic;
-+ (void) removeAuthenticationDictionary;
+// Authentication Dictionary methods
++ (NSDictionary *)getAuthenticationDictionary;
++ (void)setAuthenticationDictionary: (NSDictionary *) dic;
++ (void)removeAuthenticationDictionary;
 
 - (void)setUserId:(int) userDeviceId
     andSecureCode:(NSString *) secureCode;
