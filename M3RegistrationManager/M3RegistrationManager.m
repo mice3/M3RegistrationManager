@@ -24,8 +24,6 @@
 @property (nonatomic, strong) UIView *transparentView;
 @end
 
-//NSString *const FBSessionStateChangedNotification = @"it.mice3.flykly:FBSessionStateChangedNotification";
-
 @implementation M3RegistrationManager
 
 
