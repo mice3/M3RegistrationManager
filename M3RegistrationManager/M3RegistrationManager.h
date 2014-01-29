@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FacebookSDK/Facebook.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import "M3ServerConstants.h"
 
 @protocol M3RegistartionManagerDelegate <NSObject>
@@ -54,7 +54,8 @@
 
 // Authentication Dictionary methods
 + (NSDictionary *)getAuthenticationDictionary;
-+ (void)setAuthenticationDictionary: (NSDictionary *) dic;
++ (void) setUserDeviceId:(int) userDeviceId
+           andSecureCode:(NSString *) secureCode;
 + (void)removeAuthenticationDictionary;
 
 - (void)setUserId:(int) userDeviceId

@@ -11,10 +11,6 @@
 #import <Twitter/Twitter.h>
 #import "TWAPIManager.h"
 #import "Accounts/Accounts.h"
-#define kUserId @"userId"
-#define kUserDeviceId @"userDeviceId"
-
-
 
 @interface M3RegistrationManager ()
 @property (nonatomic, strong) ACAccountStore *accountStore;
@@ -122,7 +118,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager POST:serverScript parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (![[responseObject objectForKey:kParameterStatus] intValue]) {
+        if ([[responseObject objectForKey:kParameterStatus] intValue]) {
             if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
                 [self.delegate onRegistrationFailure:[responseObject objectForKey:kParameterErrorDescription]];
             }
@@ -421,22 +417,32 @@
 #pragma mark get / set post parameters
 + (NSDictionary *)getAuthenticationDictionary
 {
-    NSDictionary *authDict = [[NSUserDefaults standardUserDefaults] objectForKey:kParameterAuthToken];
-    if (authDict) {
-        return @{kParameterAuthToken : authDict};
-    }
+    NSString * deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDeviceId];
+    NSString * secureCode = [[NSUserDefaults standardUserDefaults] stringForKey:kSecureCode];
     
-    return nil;
+    if (deviceId && secureCode) {
+        return @{kUserDeviceId: deviceId,
+                 kSecureCode: secureCode};
+    } else {
+        return nil;
+    }
 }
 
 + (void)setAuthenticationDictionary:(NSDictionary *)dic
 {
-    [[NSUserDefaults standardUserDefaults] setObject:dic forKey:kParameterAuthToken];
+    NSNumber *userDeviceId = [dic objectForKey:kUserDeviceId];
+    NSString *secureCode = [dic objectForKey:kSecureCode];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:userDeviceId forKey:kUserDeviceId];
+    [[NSUserDefaults standardUserDefaults] setValue:secureCode forKey:kSecureCode];
+    
+    NSLog(@"%@", [M3RegistrationManager getAuthenticationDictionary]);
 }
 
 + (void)removeAuthenticationDictionary
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kParameterAuthToken];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDeviceId];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSecureCode];
 }
 
 @end
