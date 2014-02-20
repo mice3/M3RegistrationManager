@@ -15,12 +15,43 @@ Installation:
 - Add the Social.framework, AdSupport.framework, libsqlite3.dylib, Accounts.framework, Twitter.framework, Security.framework  
 - In your XCode Project, drag the M3RegistrationManager folder and AFNetworking (under the main folder) into your project  
 - Import M3RegistrationManager.h  
-- create a M3RegistrationConstants.h file which needs to containt the following constants:  
-            a) #define kServerURL // url of your backend server  
-            b) #define kServerCreateDevice // createDevice script (check the M3RegistrationServer for tips or a basic implementation)  
-            c) #define kTWConsumerKey // your Twitter Consumer key (only if Twitter login is required)  
-            d) #define kTWConsumerSecret // your Twitter Consumer Secret (only if Twitter login is required)  
-            e) #define kFBSessionStateChangedNotification // Facebook state change notification (generaly it looks like com.acme.appName:FBSessionStateChangedNotification    
+- create a M3ServerConstants.h file which needs to containt the following constants:  
+#define kServerURL                  @"serverUrl"  
+// Authentication functions  
+#define kServerLogin                kServerURL @"/mobile_scripts/login.php"  
+#define kServerFBLogin              kServerURL @"/mobile_scripts/register.php"  
+#define kServerRegister             kServerURL @"/mobile_scripts/register.php"  
+#define kServerResetPassword        kServerURL @"/mobile_scripts/resetPassword.php"  
+#define kServerChangePassword       kServerURL @"/mobile_scripts/login.php"  
+// if auth sending params should be encapsulated into an user object  
+#define kEncapsulateAuthParams          0  
+// post parameter keys  
+#define kParameterUser                  @"authentication_token"  
+#define kParameterUserId                @"user_id"  
+#define kParameterEmail                 @"email"  
+#define kParameterPassword              @"password"  
+#define kParameterPassword2             @"password_reentered"  
+#define kParameterProvider              @"registrationType"  
+#define kParameterAccessToken           @"accessToken"  
+#define kParameterTearmsAgree           @"register_agree"  
+#define kParameterAuthToken             @"authenticationToken"  
+#define kParameterStatus                @"hasError"  
+#define kParameterErrorDescription      @"show_message"  
+#define kParameterError                 @"error"  
+#define kParameterFriends               @"friends"  
+#define kParameterOldPass               @"old_password"  
+#define kParameterNewPass               @"new_password"  
+#define kParameterNewPass2              @"new_password_repeat"  
+// other constants  
+#define kFacebookConnected @"facebookConnected"  
+#define kUserDeviceId @"userId"  
+#define kSecureCode @"secureCode"  
+#define kDeviceActivated @"isActivated"  
+// Twitter consumer key and secret  
+#define kTWConsumerKey @""  
+#define kTWConsumerSecret @""  
+// Facebook state change notification  
+#define kFBSessionStateChangedNotification @"com.acme.appName:FBSessionStateChangedNotification"     
 - Start writing code!
 
 The repository is in an alpha state, so if you have any questions or trouble, dont hesitate to ask :)
