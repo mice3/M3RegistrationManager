@@ -10,48 +10,50 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "M3RegistrationConstants.h"
 
-@protocol M3RegistartionManagerDelegate <NSObject>
--(void)onRegistrationSuccess:(NSDictionary *)responseData;
+@protocol M3RegistrationDelegate <NSObject>
+- (void)onRegistrationSuccess:(NSDictionary *)responseData;
 @optional
--(void)showTransparentView:(BOOL)showView;
--(void)onRegistrationFailure:(NSString *)errorString;
+- (void)onRegistrationFailure:(id)error;
 @end
 
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
 
-@property (nonatomic, strong) id<M3RegistartionManagerDelegate> delegate;
+@property (nonatomic, strong) id<M3RegistrationDelegate> delegate;
 
 /*
  viewController is the view where registration happens (we need it so that the touches can be disabled while the
  procedure takes place
-*/
+ */
++ (M3RegistrationManager *)sharedInstance;
 -(id)initWithViewController:(UIViewController *)viewController;
 
-// register new user
+// Registration methods
 -(void) registerDeviceWithEmail:(NSString *)email
                     andPassword:(NSString *)password;
 -(void) registerDeviceWithEmail:(NSString *)email;
 -(void) registerDeviceWithFacebook;
 -(void) registerDeviceWithTwitter;
 
-// login an existing user
+// Login methods
 -(void) loginWithEmail:(NSString *)email
            andPassword:(NSString *)password;
-// TODO: separate login and register methods for Twitter & Facebook
 -(void) loginWithFacebook;
 -(void) loginWithTwitter;
 
-// other methods
--(void) changeEmailTo:(NSString *)email;
--(void)forgotPassword;
--(void) setUserDeviceId:(int) userDeviceId
-          andSecureCode:(NSString *) secureCode
-         andIsActivated:(BOOL) isActivated;
--(void)activateUserDevice;
-+(NSDictionary *) getUserDevicePostParamsDictionary;
+// Other authentication methods
+- (void)changeEmailTo:(NSString *)email;
+- (void)resetPasswordForEmail:(NSString *)email;
+- (void)forgotPassword;
+- (void)connectWithFacebook;
++ (BOOL)validatePassword:(NSString *)password;
++ (BOOL)validateEmail:(NSString *)email;
 
-// connects the current account with facebook
--(void)connectWithFacebook;
+// Authentication token methods
++ (void)activateDevice;
++ (void)setAuthenticationToken:(NSDictionary *)authToken;
++ (NSDictionary *)getAuthenticationToken;
++ (void)removeAuthenticationToken;
+
 
 // twitter reverse auth method
 - (void)obtainAccessToAccountsWithBlock:(void (^)(BOOL))block;
