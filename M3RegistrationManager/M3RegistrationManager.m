@@ -18,6 +18,9 @@
 
 
 @interface M3RegistrationManager ()
+
+- (void)callScript:(NSString *)scriptName withParameters:(NSDictionary *)parameters;
+
 @property (nonatomic, strong) ACAccountStore *accountStore;
 @property (nonatomic, strong) TWAPIManager *apiManager;
 @property (nonatomic, strong) NSArray *accounts;
@@ -229,6 +232,11 @@ static M3RegistrationManager *instanceOfRegistrationManager;
     [self registerDeviceWithFacebook];
 }
 
+- (void)checkUserStatus
+{
+    [self callScript:kConstantsCheckIfDeviceIsActivatedUrl withParameters:[M3RegistrationManager getAuthenticationToken]];
+}
+
 
 #pragma mark - Facebook auxilary methods
 /*
@@ -432,6 +440,17 @@ static M3RegistrationManager *instanceOfRegistrationManager;
     [authToken setObject:[NSNumber numberWithBool:YES] forKey:kDeviceActivated];
     
     [M3RegistrationManager setAuthenticationToken:authToken];
+}
+
++ (BOOL)isUserActivated
+{
+    NSDictionary *authDict = [[NSUserDefaults standardUserDefaults] objectForKey:kAuthToken];
+    
+    if ([[authDict objectForKey:@"status"] rangeOfString:@"Activated"].location != NSNotFound) {
+        return YES;
+    }
+    
+    return [[authDict objectForKey:kDeviceActivated] boolValue];
 }
 
 @end
