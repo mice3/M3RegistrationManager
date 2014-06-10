@@ -18,7 +18,7 @@
 
 @interface M3RegistrationManager : NSObject <UIActionSheetDelegate>
 
-@property (nonatomic, strong) id<M3RegistrationDelegate> delegate;
+@property (nonatomic, weak) id<M3RegistrationDelegate> delegate;
 
 /*
  viewController is the view where registration happens (we need it so that the touches can be disabled while the
