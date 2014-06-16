@@ -420,7 +420,7 @@ static M3RegistrationManager *instanceOfRegistrationManager;
 
 + (void)setAuthenticationToken:(NSDictionary *)params
 {
-    NSDictionary *authToken = [params valueForKey:@"authenticationToken"];
+    NSDictionary *authToken = [params valueForKey:kAuthToken];
     if (!authToken) {
         NSString * deviceId = [params valueForKey:kUserDeviceId];
         NSString * secureCode = [params valueForKey:kSecureCode];
