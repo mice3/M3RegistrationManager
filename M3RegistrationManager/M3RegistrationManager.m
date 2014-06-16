@@ -1,4 +1,4 @@
-//
+
 //  M3RegistrationManager.m
 //  flykly
 //
@@ -393,7 +393,7 @@ static M3RegistrationManager *instanceOfRegistrationManager;
                         [self.delegate onRegistrationFailure:error?[error localizedDescription]:[responsDict valueForKey:@"errorMessage"]];
                     }
                 } else {
-                    [self onAuthenticationSuccess:responsDict];
+                    [self onAuthenticationSuccess:[responsDict valueForKey:@"authenticationToken"]];
                     if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
                         [self.delegate onRegistrationSuccess:responsDict];
                     }
@@ -402,7 +402,6 @@ static M3RegistrationManager *instanceOfRegistrationManager;
         if ([self.delegate respondsToSelector:@selector(onRegistrationFailure:)]) {
             [self.delegate onRegistrationFailure:[error localizedDescription]];
         }
-        
     }];
 }
 
@@ -416,11 +415,19 @@ static M3RegistrationManager *instanceOfRegistrationManager;
 {
     NSDictionary *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:kAuthToken];
     
-    if (authToken) {
-        return authToken;
-    } else {
-        return nil;
-    }
+//    if (!authToken) {
+//        NSString * deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDeviceId];
+//        NSString * secureCode = [[NSUserDefaults standardUserDefaults] stringForKey:kSecureCode];
+//        
+//        if (deviceId
+//            && secureCode) {
+//            authToken = @{kUserDeviceId: deviceId,
+//                          kSecureCode: secureCode};
+//            
+//            [M3RegistrationManager setAuthenticationToken:authToken];
+//        }
+//    }
+    return authToken;
 }
 
 + (void)setAuthenticationToken:(NSDictionary *)authToken
