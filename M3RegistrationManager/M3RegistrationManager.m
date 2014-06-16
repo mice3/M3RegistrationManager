@@ -92,7 +92,7 @@ static M3RegistrationManager *instanceOfRegistrationManager;
     [params setValue:password forKey:@"password"];
     [params setValue:[[UIDevice currentDevice] model] forKey:@"deviceName"];
     
-    [self callScript:kServerCreateDevice withParameters:params];
+    [self callScript:kServerRegister withParameters:params];
 }
 
 - (void)registerDeviceWithFacebook
@@ -393,7 +393,7 @@ static M3RegistrationManager *instanceOfRegistrationManager;
                         [self.delegate onRegistrationFailure:error?[error localizedDescription]:[responsDict valueForKey:@"errorMessage"]];
                     }
                 } else {
-                    [self onAuthenticationSuccess:[responsDict valueForKey:@"authenticationToken"]];
+                    [self onAuthenticationSuccess:responsDict];
                     if ([self.delegate respondsToSelector:@selector(onRegistrationSuccess:)]) {
                         [self.delegate onRegistrationSuccess:responsDict];
                     }
@@ -415,23 +415,22 @@ static M3RegistrationManager *instanceOfRegistrationManager;
 {
     NSDictionary *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:kAuthToken];
     
-//    if (!authToken) {
-//        NSString * deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:kUserDeviceId];
-//        NSString * secureCode = [[NSUserDefaults standardUserDefaults] stringForKey:kSecureCode];
-//        
-//        if (deviceId
-//            && secureCode) {
-//            authToken = @{kUserDeviceId: deviceId,
-//                          kSecureCode: secureCode};
-//            
-//            [M3RegistrationManager setAuthenticationToken:authToken];
-//        }
-//    }
     return authToken;
 }
 
-+ (void)setAuthenticationToken:(NSDictionary *)authToken
++ (void)setAuthenticationToken:(NSDictionary *)params
 {
+    NSDictionary *authToken = [params valueForKey:@"authenticationToken"];
+    if (!authToken) {
+        NSString * deviceId = [params valueForKey:kUserDeviceId];
+        NSString * secureCode = [params valueForKey:kSecureCode];
+        
+        if (deviceId
+            && secureCode) {
+            authToken = @{kUserDeviceId: deviceId,
+                          kSecureCode: secureCode};
+        }
+    }
     [M3RegistrationManager removeAuthenticationToken];
     [[NSUserDefaults standardUserDefaults] setObject:authToken forKey:kAuthToken];
 }
@@ -446,7 +445,7 @@ static M3RegistrationManager *instanceOfRegistrationManager;
     NSMutableDictionary *authToken = [[M3RegistrationManager getAuthenticationToken] mutableCopy];
     [authToken setObject:[NSNumber numberWithBool:YES] forKey:kDeviceActivated];
     
-    [M3RegistrationManager setAuthenticationToken:authToken];
+    [M3RegistrationManager setAuthenticationToken:@{kAuthToken: authToken}];
 }
 
 + (BOOL)isUserActivated
