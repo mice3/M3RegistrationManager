@@ -405,9 +405,22 @@ static M3RegistrationManager *instanceOfRegistrationManager;
     }];
 }
 
-- (void)onAuthenticationSuccess:(NSDictionary *)parameters
+- (void)onAuthenticationSuccess:(NSDictionary *)params
 {
-    [M3RegistrationManager setAuthenticationToken:parameters];
+    NSDictionary *authToken = [params valueForKey:kAuthToken];
+    if (!authToken) {
+        NSString * deviceId = [params valueForKey:kUserDeviceId];
+        NSString * secureCode = [params valueForKey:kSecureCode];
+        
+        if (deviceId && secureCode) {
+            authToken = @{kUserDeviceId: deviceId,
+                          kSecureCode: secureCode};
+        }
+    }
+    if (!authToken) {
+        abort();
+    }
+    [M3RegistrationManager setAuthenticationToken:authToken];
 }
 
 #pragma mark get / set post parameters
@@ -418,20 +431,8 @@ static M3RegistrationManager *instanceOfRegistrationManager;
     return authToken;
 }
 
-+ (void)setAuthenticationToken:(NSDictionary *)params
++ (void)setAuthenticationToken:(NSDictionary *)authToken
 {
-    NSDictionary *authToken = [params valueForKey:kAuthToken];
-    if (!authToken) {
-        NSString * deviceId = [params valueForKey:kUserDeviceId];
-        NSString * secureCode = [params valueForKey:kSecureCode];
-        
-        if (deviceId
-            && secureCode) {
-            authToken = @{kUserDeviceId: deviceId,
-                          kSecureCode: secureCode};
-        }
-    }
-    [M3RegistrationManager removeAuthenticationToken];
     [[NSUserDefaults standardUserDefaults] setObject:authToken forKey:kAuthToken];
 }
 
@@ -440,23 +441,9 @@ static M3RegistrationManager *instanceOfRegistrationManager;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAuthToken];
 }
 
-+ (void)activateDevice
-{
-    NSMutableDictionary *authToken = [[M3RegistrationManager getAuthenticationToken] mutableCopy];
-    [authToken setObject:[NSNumber numberWithBool:YES] forKey:kDeviceActivated];
-    
-    [M3RegistrationManager setAuthenticationToken:@{kAuthToken: authToken}];
-}
-
 + (BOOL)isUserActivated
 {
-    NSDictionary *authDict = [[NSUserDefaults standardUserDefaults] objectForKey:kAuthToken];
-    
-    if ([[authDict objectForKey:@"status"] rangeOfString:@"Activated"].location != NSNotFound) {
-        return YES;
-    }
-    
-    return [[authDict objectForKey:kDeviceActivated] boolValue];
+    return [self getAuthenticationToken] != nil;
 }
 
 @end
