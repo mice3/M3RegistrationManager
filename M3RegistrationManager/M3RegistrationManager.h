@@ -51,7 +51,6 @@
 + (BOOL)validateEmail:(NSString *)email;
 
 // Authentication token methods
-+ (void)activateDevice;
 + (BOOL)isUserActivated;
 + (void)setAuthenticationToken:(NSDictionary *)authToken;
 + (NSDictionary *)getAuthenticationToken;
